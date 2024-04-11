@@ -1,69 +1,113 @@
-import { Component, OnInit } from '@angular/core';
-import Phaser from 'phaser';
-import { Buildings } from './features/models/buildings.model';
-import { GameCursors } from './features/models/game-cursors.model';
-import { MapExtras } from './features/models/map-extras.model';
-import { Parallax } from './features/models/parallax.model';
-import { Player } from './features/models/player.model';
+import { Component, OnInit } from "@angular/core";
+import Phaser from "phaser";
+import { AssetsLoader } from "./features/models/assets-loader.model";
+import { GameCursors } from "./features/models/game-cursors.model";
+import { GameScene } from "./features/models/game-scene.model";
+import { MapExtras } from "./features/models/map-extras.model";
+import { Parallax } from "./features/models/parallax.model";
+import { BuildingsState } from "./features/state-models/buildings-state.model";
+import { EnemyState } from "./features/state-models/enemy-state.model";
+import { PlayerState } from "./features/state-models/player-state.model";
+import { BuildingsService } from "./shared/services/buildings.service";
+import { EnemyService } from "./shared/services/enemy.service";
+import { PlayerService } from "./shared/services/player.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnInit {
-  title = 'epic-world';
+  title = "epic-world";
+  private phaserGame: Phaser.Game; // Placeholder for Phaser game instance
 
   public config = {
     type: Phaser.AUTO,
     width: window.innerWidth,
     height: window.innerHeight,
     scene: {
-      preload: this.preload,
-      create: this.create,
-      update: this.update,
+      preload: this.preload.bind(this),
+      create: this.create.bind(this),
+      update: this.update.bind(this),
     },
     physics: {
-      default: 'arcade',
+      default: "arcade",
       arcade: {
         gravity: { y: 450 },
         debug: false,
       },
     },
   };
-  public game: Phaser.Game = new Phaser.Game(this.config);
 
-  public ngOnInit(): void {}
+  constructor(
+    private readonly playerService: PlayerService,
+    private readonly buildingService: BuildingsService,
+    private readonly enemyService: EnemyService
+  ) {}
 
-  public preload(this: Phaser.Scene): void {
-    Parallax.loadParallaxBackgrounds.bind(this)();
-    MapExtras.loadMapExtras.bind(this)();
-    Player.loadPlayer.bind(this)();
-    Buildings.loadBuildings.bind(this)();
+  public ngOnInit(): void {
+    this.createGame();
   }
 
-  public create(this: Phaser.Scene): void {
-    Parallax.initializeParallaxBackgrounds.bind(this)();
+  public preload(): void {
+    GameScene.initGameScene(this.phaserGame);
 
-    this.physics.world.setBounds(0, 0, MapExtras.mapSize, window.innerHeight);
+    AssetsLoader.loadAssets([PlayerState.player]);
+    AssetsLoader.loadAssets(EnemyState.enemies);
+    Parallax.loadParallaxBackgrounds();
+    MapExtras.loadMapExtras();
+    AssetsLoader.loadAssets(BuildingsState.buildings, false);
 
-    GameCursors.initializeKeyboardControls.bind(this)();
-    MapExtras.initializeMapExtras.bind(this)();
+    this.buildingService.loadBuildings();
+  }
+
+  public create(): void {
+    Parallax.initializeParallaxBackgrounds();
+
+    GameScene.physics.world.setBounds(
+      0,
+      0,
+      MapExtras.mapSize,
+      window.innerHeight
+    );
+
+    GameCursors.initializeKeyboardControls();
+    MapExtras.initializeMapExtras();
 
     MapExtras.initializeGrass(100);
-    Buildings.initializeBuildings.bind(this)();
-    Player.initializePlayer.bind(this)(
+    this.buildingService.initializeBuildings();
+    this.playerService.initializePlayer(
       MapExtras.tiles,
-      Buildings.buildingsGroup
+      this.buildingService.buildingsGroup
     );
+    // this.enemyService.initializeEnemies(
+    //   MapExtras.tiles,
+    //   this.buildingService.buildingsGroup
+    // );
     MapExtras.initializeGrass(40);
     MapExtras.initializeTiles();
 
-    this.cameras.main.setBounds(0, 0, MapExtras.mapSize, window.innerHeight);
-    this.cameras.main.startFollow(Player.entity, true, 0.08, 0.08);
+    GameScene.cameras.main.setBounds(
+      0,
+      0,
+      MapExtras.mapSize,
+      window.innerHeight
+    );
+    GameScene.cameras.main.startFollow(
+      this.playerService.entity,
+      true,
+      0.08,
+      0.08
+    );
   }
 
-  public update(this: Phaser.Scene): void {
-    Player.listenToPlayerActions.bind(this)(Buildings.buildingsGroup);
+  public update(): void {
+    this.playerService.listenToPlayerActions(
+      this.buildingService.buildingsGroup
+    );
+  }
+
+  public createGame() {
+    this.phaserGame = new Phaser.Game(this.config);
   }
 }

@@ -1,4 +1,5 @@
-import { MapExtras } from './map-extras.model';
+import { GameScene } from "./game-scene.model";
+import { MapExtras } from "./map-extras.model";
 
 export class Parallax {
   public static settings = {
@@ -13,15 +14,15 @@ export class Parallax {
     walking: { trees: 0.05, fog: 0.07, water: 0.1, terrain: 0.2 },
   };
 
-  public static initializeParallaxBackgrounds(this: Phaser.Scene): void {
+  public static initializeParallaxBackgrounds(): void {
     const backgroundScaleX = window.innerWidth / 576;
     const backgroundScaleY = window.innerHeight / 324;
 
     Object.keys(Parallax.settings).forEach(
       (layerName: string, index: number) => {
-        const layerImageSource = 'layer-' + (index + 1);
+        const layerImageSource = "layer-" + (index + 1);
         console.log(layerImageSource);
-        Parallax.settings[layerName] = this.add
+        Parallax.settings[layerName] = GameScene.add
           .tileSprite(
             0,
             0,
@@ -59,7 +60,7 @@ export class Parallax {
     } = Parallax.settings;
 
     const increment = (value: number, factor: number): number =>
-      orientation === 'left' ? value - factor : value + factor;
+      orientation === "left" ? value - factor : value + factor;
 
     backgroundFog.tilePositionX = increment(
       backgroundFog.tilePositionX,
@@ -79,11 +80,11 @@ export class Parallax {
     );
   }
 
-  public static loadParallaxBackgrounds(this: Phaser.Scene): void {
-    this.load.image('layer-1', 'assets/Maps/Swamp/Layers/1.png');
-    this.load.image('layer-2', 'assets/Maps/Swamp/Layers/2.png');
-    this.load.image('layer-3', 'assets/Maps/Swamp/Layers/3.png');
-    this.load.image('layer-4', 'assets/Maps/Swamp/Layers/4.png');
-    this.load.image('layer-5', 'assets/Maps/Swamp/Layers/5.png');
+  public static loadParallaxBackgrounds(): void {
+    GameScene.load.image("layer-1", "assets/Maps/Swamp/Layers/1.png");
+    GameScene.load.image("layer-2", "assets/Maps/Swamp/Layers/2.png");
+    GameScene.load.image("layer-3", "assets/Maps/Swamp/Layers/3.png");
+    GameScene.load.image("layer-4", "assets/Maps/Swamp/Layers/4.png");
+    GameScene.load.image("layer-5", "assets/Maps/Swamp/Layers/5.png");
   }
 }

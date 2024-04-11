@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
-import { TargetType } from '../../shared/enums/target-type.enum';
-import { Target } from '../../shared/interfaces/target.interface';
+import { Injectable } from "@angular/core";
+import { TargetType } from "../../shared/enums/target-type.enum";
+import { Target } from "../../shared/interfaces/target.interface";
 
 @Injectable()
 export class PlayerState {
   public static player: Target = {
     id: 1,
-    name: 'GraveRobber',
+    name: "GraveRobber",
     type: TargetType.PLAYER,
-    currentMap: 'swamp',
+    image: "assets/Characters/GraveRobber/anim/player.png",
+    currentMap: "swamp",
     equippedItems: {},
     combatAttributes: {
       level: 1,
@@ -32,6 +33,36 @@ export class PlayerState {
       gold: 0,
       diamonds: 0,
     },
+    imageFrames: [
+      {
+        name: "idle",
+        start: 0,
+        end: 3,
+        repeatable: true,
+        fps: 10,
+      },
+      {
+        name: "walking",
+        start: 4,
+        end: 9,
+        repeatable: true,
+        fps: 10,
+      },
+      {
+        name: "running",
+        start: 10,
+        end: 15,
+        repeatable: true,
+        fps: 12,
+      },
+      {
+        name: "attack",
+        start: 16,
+        end: 21,
+        repeatable: true,
+        fps: 10,
+      },
+    ],
     effects: [],
     aboveNotifications: [],
     boundCssClass: [],
