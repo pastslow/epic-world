@@ -43,8 +43,7 @@ export class MapExtras {
   }
 
   public static initializeGrass(grassChance: number = 60): void {
-    const grassPieces = 800;
-    const grassWidth = 8;
+    const grassPieces = 500;
     const grassHeight = 15;
     const terrainHeight = 32;
     const positionY = window.innerHeight - terrainHeight - grassHeight / 3;
@@ -52,9 +51,10 @@ export class MapExtras {
     for (let i = 0; i <= grassPieces; i++) {
       const grassNumber = Math.round(Math.random() * 10) || 1;
       const chance = Math.random() * 100;
+      const positionX = Math.random() * this.mapSize;
 
       MapExtras.grass.create(
-        0 + grassWidth / 2 + i * grassWidth,
+        positionX,
         positionY,
         chance <= grassChance ? "grass-" + grassNumber : "grass-empty"
       );

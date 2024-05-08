@@ -34,6 +34,8 @@ export class PlayerService {
     );
     this.entity.displayHeight = 100;
     this.entity.displayWidth = 100;
+    this.entity.name = PlayerState.player.name;
+    this.entity["targetOrigin"] = PlayerState.player;
 
     this.entity.setBounce(0.2);
     this.entity.setCollideWorldBounds(true);

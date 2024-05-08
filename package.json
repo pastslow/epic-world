@@ -10,7 +10,7 @@
   },
   "private": true,
   "dependencies": {
-    "phaser": "^3.70.0",
+    "phaser": "3.80.1",
     "@angular/animations": "^17.0.3",
     "@angular/common": "^17.0.3",
     "@angular/compiler": "^17.0.3",
