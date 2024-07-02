@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Phaser from 'phaser';
 import { AssetsLoader } from './features/models/assets-loader.model';
+import { Avatar } from './features/models/avatar-model';
 import { GameCursors } from './features/models/game-cursors.model';
 import { GameScene } from './features/models/game-scene.model';
 import { MapExtras } from './features/models/map-extras.model';
@@ -19,6 +20,7 @@ import { PlayerService } from './shared/services/player.service';
    styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+   public player;
    title = 'epic-world';
    private phaserGame: Phaser.Game; // Placeholder for Phaser game instance
 
@@ -34,7 +36,7 @@ export class AppComponent implements OnInit {
       physics: {
          default: 'arcade',
          arcade: {
-            gravity: { y: 450, x: 0 },
+            gravity: { y: 600, x: 0 },
             debug: false,
          },
       },
@@ -48,11 +50,14 @@ export class AppComponent implements OnInit {
 
    public ngOnInit(): void {
       this.createGame();
+
+      this.player = PlayerState.player;
    }
 
    public preload(): void {
       GameScene.initGameScene(this.phaserGame);
 
+      Avatar.loadAssets();
       AssetsLoader.loadAssets([PlayerState.player]);
       AssetsLoader.loadAssets(EnemyState.enemies);
       Parallax.loadParallaxBackgrounds();
@@ -64,6 +69,8 @@ export class AppComponent implements OnInit {
 
    public create(): void {
       Parallax.initializeParallaxBackgrounds();
+
+      Avatar.initializeAvatar();
 
       GameScene.physics.world.setBounds(0, 0, MapExtras.mapSize, window.innerHeight);
 
