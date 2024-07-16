@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { GameCursors } from '../../features/models/game-cursors.model';
-import { GameScene } from '../../features/models/game-scene.model';
-import { Parallax } from '../../features/models/parallax.model';
+import { GameCursors } from '~/src/app/features/models/game-cursors.model';
+import { GameScene } from '~/src/app/features/models/game-scene.model';
+import { Parallax } from '~/src/app/features/models/parallax.model';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerMovementService {

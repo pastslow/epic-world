@@ -8,9 +8,10 @@ export interface Target {
    name?: string;
    type?: TargetType;
    image?: string;
+   imageFrames?: ImageFrame[];
    currentMap?: string;
    combatAttributes?: CombatAttributes;
    physicalAttributes?: PhysicalAttributes;
-   imageFrames?: ImageFrame[];
    currentTarget?: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+   pushNotifications?: any[];
 }

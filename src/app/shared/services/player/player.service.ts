@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AnimationFrame } from '../../features/models/animation-frame.model';
-import { GameCursors } from '../../features/models/game-cursors.model';
-import { GameScene } from '../../features/models/game-scene.model';
-import { PlayerState } from '../../features/state-models/player-state.model';
-import { ImageFrame } from '../interfaces/image-frames.interface';
-import { Target } from '../interfaces/target.interface';
+import { AnimationFrame } from '~/src/app/features/models/animation-frame.model';
+import { GameCursors } from '~/src/app/features/models/game-cursors.model';
+import { GameScene } from '~/src/app/features/models/game-scene.model';
+import { PlayerState } from '~/src/app/features/state-models/player-state.model';
+import { TimeStamp } from '~/src/app/features/state-models/time-stamp.model';
+import { ImageFrame } from '../../interfaces/image-frames.interface';
+import { Target } from '../../interfaces/target.interface';
 import { PlayerAttackService } from './player-attack.service';
 import { PlayerMovementService } from './player-movement.service';
 
@@ -13,6 +14,7 @@ import { PlayerMovementService } from './player-movement.service';
 })
 export class PlayerService {
    public entity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+   public playerNotifications: any[] = []; // Variable to hold the group of notifications
 
    constructor(private playerMovementService: PlayerMovementService, private playerAttackService: PlayerAttackService) {}
 
@@ -42,16 +44,44 @@ export class PlayerService {
    }
 
    public listenToPlayerActions(buildingsGroup: Phaser.Physics.Arcade.Group): void {
+      const target: Target = this.entity['targetOrigin'];
       this.playerMovementService.restrictPartialActionsInAreas(buildingsGroup, this.entity);
 
-      if (this.entity['targetOrigin'].combatAttributes.isAttacking) {
+      // if (target.pushNotifications.length) {
+      //    const numberText = GameScene.add.text(this.entity.x - 10, this.entity.y - this.entity.displayHeight / 2, '5', {
+      //       fontSize: '32px',
+      //       color: '#ffffff',
+      //    });
+      //    numberText['settings'] = target.pushNotifications[0];
+      //    numberText['settings'].size = 32;
+
+      //    target.pushNotifications = [];
+      //    this.playerNotifications.push(numberText);
+      // }
+
+      // if (this.playerNotifications.length) {
+      //    this.playerNotifications.forEach((notification: Phaser.GameObjects.Text, index: number) => {
+      //       if (notification['settings'].duration + notification['settings'].currentTime < TimeStamp.now) {
+      //          notification.destroy();
+      //          this.playerNotifications.splice(index, 1);
+      //          return;
+      //       }
+
+      //       notification['settings'].size -= 1;
+      //       notification.setX(this.entity.x - 10);
+      //       notification.setY(notification.y - 1);
+      //       notification.setFontSize(notification['settings'].size);
+      //    });
+      // }
+
+      if (target.combatAttributes.isAttacking) {
          this.playerAttackService.animAttack(this.entity);
          return;
       }
 
       if (GameCursors.keyboardControls.space.isDown) {
-         if (!this.entity['targetOrigin'].combatAttributes.isAttacking) {
-            this.entity['targetOrigin'].combatAttributes.isAttacking = true;
+         if (!target.combatAttributes.isAttacking) {
+            target.combatAttributes.isAttacking = true;
             return;
          }
       }

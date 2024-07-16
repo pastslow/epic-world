@@ -59,5 +59,6 @@ export class PlayerState {
             fps: 10,
          },
       ],
+      pushNotifications: [],
    };
 }

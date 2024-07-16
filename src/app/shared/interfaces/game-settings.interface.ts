@@ -1,3 +1,5 @@
 export interface GameSettings {
-    pause: boolean;
+   pause: boolean;
+   volume: number;
+   muted: boolean;
 }

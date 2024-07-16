@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Phaser from 'phaser';
 import { AssetsLoader } from './features/models/assets-loader.model';
-import { Avatar } from './features/models/avatar-model';
 import { GameCursors } from './features/models/game-cursors.model';
 import { GameScene } from './features/models/game-scene.model';
 import { MapExtras } from './features/models/map-extras.model';
@@ -11,8 +10,8 @@ import { EnemyState } from './features/state-models/enemy-state.model';
 import { PlayerState } from './features/state-models/player-state.model';
 import { TimeStamp } from './features/state-models/time-stamp.model';
 import { BuildingsService } from './shared/services/buildings.service';
-import { EnemyService } from './shared/services/enemy.service';
-import { PlayerService } from './shared/services/player.service';
+import { EnemyService } from './shared/services/enemy/enemy.service';
+import { PlayerService } from './shared/services/player/player.service';
 
 @Component({
    selector: 'app-root',
@@ -56,8 +55,6 @@ export class AppComponent implements OnInit {
 
    public preload(): void {
       GameScene.initGameScene(this.phaserGame);
-
-      Avatar.loadAssets();
       AssetsLoader.loadAssets([PlayerState.player]);
       AssetsLoader.loadAssets(EnemyState.enemies);
       Parallax.loadParallaxBackgrounds();
@@ -69,8 +66,6 @@ export class AppComponent implements OnInit {
 
    public create(): void {
       Parallax.initializeParallaxBackgrounds();
-
-      Avatar.initializeAvatar();
 
       GameScene.physics.world.setBounds(0, 0, MapExtras.mapSize, window.innerHeight);
 

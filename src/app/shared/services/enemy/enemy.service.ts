@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AnimationFrame } from '../../features/models/animation-frame.model';
-import { GameScene } from '../../features/models/game-scene.model';
-import { EnemyState } from '../../features/state-models/enemy-state.model';
-import { TargetActions } from '../../features/state-models/target-actions.model';
-import { ImageFrame } from '../interfaces/image-frames.interface';
-import { Target } from '../interfaces/target.interface';
+import { AnimationFrame } from '~/src/app/features/models/animation-frame.model';
+import { GameScene } from '~/src/app/features/models/game-scene.model';
+import { EnemyState } from '~/src/app/features/state-models/enemy-state.model';
+import { TargetActions } from '~/src/app/features/state-models/target-actions.model';
+import { ImageFrame } from '../../interfaces/image-frames.interface';
+import { Target } from '../../interfaces/target.interface';
+
 import { EnemyAttackService } from './enemy-attack.service';
 import { EnemyMovementService } from './enemy-movement.service';
 

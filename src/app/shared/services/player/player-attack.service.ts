@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GameCursors } from '../../features/models/game-cursors.model';
+import { GameCursors } from '../../../features/models/game-cursors.model';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerAttackService {

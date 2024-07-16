@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { TargetActions } from '../../features/state-models/target-actions.model';
-import { Target } from '../interfaces/target.interface';
+import { TargetActions } from '~/src/app/features/state-models/target-actions.model';
+import { Target } from '../../interfaces/target.interface';
 
 @Injectable({ providedIn: 'root' })
 export class EnemyMovementService {
@@ -25,7 +25,7 @@ export class EnemyMovementService {
       }
    }
 
-   public returnToItsInitialPosition(entity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody, entityTargetOrigin: Target) {
+   public returnToItsInitialPosition(entity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody, entityTargetOrigin: Target): void {
       if (Math.abs(entity.x - entityTargetOrigin.combatAttributes.initialPositionX) <= 100) {
          entityTargetOrigin.combatAttributes.initialPositionX = entity.x;
          entity.setVelocityX(0);

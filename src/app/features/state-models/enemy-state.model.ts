@@ -20,7 +20,7 @@ export class EnemyState {
             minAttack: 5,
             maxAttack: 10,
             blockChance: 2,
-            critChance: 100,
+            critChance: 10,
             viewRange: 200,
             pauseBetweenAttack: 1000,
             pauseStartTime: 0,
