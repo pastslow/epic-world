@@ -15,14 +15,15 @@ export class PlayerMovementService {
       if (GameCursors.keyboardControls.left.isDown) {
          const isRunning = this.holdingKey > 100;
          Parallax.listenToParallaxMovement(isRunning, 'left', entity.x);
-         entity.flipX = true;
 
+         entity.flipX = true;
          velocityX = isRunning ? -180 : -100;
          animationKey = isRunning ? 'running' : 'walking';
          this.holdingKey++;
       } else if (GameCursors.keyboardControls.right.isDown) {
          const isRunning = this.holdingKey > 100;
          Parallax.listenToParallaxMovement(isRunning, 'right', entity.x);
+
          entity.flipX = false;
          velocityX = isRunning ? 180 : 100;
          animationKey = isRunning ? 'running' : 'walking';

@@ -4,11 +4,11 @@
    </div>
 
    <div>
-      <div class="health-progress-bar progress-bar">
-         <span class="value-indicator">50/50</span>
-      </div>
-      <div class="exp-progress-bar progress-bar">
-         <span class="value-indicator">50/300</span>
-      </div>
+      <app-progress-bar class="health" [currentValue]="player.combatAttributes.currentHealth" [totalValue]="player.combatAttributes.health"></app-progress-bar>
+      <app-progress-bar
+         class="experience"
+         [currentValue]="player.combatAttributes.currentExperience"
+         [totalValue]="player.combatAttributes.experience"
+      ></app-progress-bar>
    </div>
 </div>

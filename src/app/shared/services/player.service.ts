@@ -4,6 +4,7 @@ import { GameCursors } from '../../features/models/game-cursors.model';
 import { GameScene } from '../../features/models/game-scene.model';
 import { PlayerState } from '../../features/state-models/player-state.model';
 import { ImageFrame } from '../interfaces/image-frames.interface';
+import { Target } from '../interfaces/target.interface';
 import { PlayerAttackService } from './player-attack.service';
 import { PlayerMovementService } from './player-movement.service';
 
@@ -19,12 +20,13 @@ export class PlayerService {
       GameScene.load.spritesheet(PlayerState.player.name, PlayerState.player.image, { frameWidth: 48, frameHeight: 48 });
    }
 
-   public initializePlayer(platforms: Phaser.Physics.Arcade.StaticGroup, buildingsGroup: Phaser.Physics.Arcade.Group): void {
-      this.entity = GameScene.physics.add.sprite(100, window.innerHeight - 100, PlayerState.player.name);
-      this.entity.displayHeight = 100;
-      this.entity.displayWidth = 100;
+   public initializePlayer(platforms: Phaser.Physics.Arcade.StaticGroup, buildingsGroup: Phaser.Physics.Arcade.Group, targetOrigin: Target): void {
+      const realPlayerSize = 100 * Math.floor(window.innerHeight / 1000);
+      this.entity = GameScene.physics.add.sprite(realPlayerSize, window.innerHeight - realPlayerSize, PlayerState.player.name);
+      this.entity.displayHeight = realPlayerSize;
+      this.entity.displayWidth = realPlayerSize;
       this.entity.name = PlayerState.player.name;
-      this.entity['targetOrigin'] = PlayerState.player;
+      this.entity['targetOrigin'] = targetOrigin;
 
       this.entity.setBounce(0.2);
       this.entity.setCollideWorldBounds(true);

@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
 
       MapExtras.initializeGrass(100);
       this.buildingService.initializeBuildings();
-      this.playerService.initializePlayer(MapExtras.tiles, this.buildingService.buildingsGroup);
+      this.playerService.initializePlayer(MapExtras.tiles, this.buildingService.buildingsGroup, this.player);
       this.enemyService.initializeEnemies(MapExtras.tiles);
       MapExtras.initializeGrass(40);
       MapExtras.initializeTiles();

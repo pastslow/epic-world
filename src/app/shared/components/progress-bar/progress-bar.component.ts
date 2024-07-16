@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,5 +9,7 @@ import { CommonModule } from '@angular/common';
    styleUrl: './progress-bar.component.scss',
 })
 export class ProgressBarComponent {
-   initialValue = input<number>();
+   currentValue = input(0);
+   totalValue = input(0);
+   barWidthPercent = computed(() => (this.currentValue() * 100) / this.totalValue());
 }

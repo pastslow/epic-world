@@ -1,3 +1,8 @@
 <div class="health-progress-bar progress-bar">
-   <span class="value-indicator">50/50</span>
+   <div [style.width]="barWidthPercent() + '%'" class="filled-bar"></div>
+   <span class="value-indicator">
+      <span>{{ currentValue() }}</span>
+      <span>/</span>
+      <span>{{ totalValue() }}</span>
+   </span>
 </div>
