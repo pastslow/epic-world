@@ -18,7 +18,7 @@ export class PlayerState {
          experience: 100,
          minAttack: 5,
          maxAttack: 10,
-         blockChance: 2,
+         blockChance: 100,
          critChance: 100,
          minMiningAttack: 15,
          maxMiningAttack: 25,

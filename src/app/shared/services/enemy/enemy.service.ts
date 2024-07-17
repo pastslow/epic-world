@@ -70,7 +70,8 @@ export class EnemyService {
                entityTargetOrigin.currentTarget.displayWidth,
                entry.x,
                entry.displayWidth
-            )
+            ) &&
+            !GameScene.physics.world.overlap(entry, entityTargetOrigin.currentTarget)
          ) {
             this.enemyMovementService.animEntityMovement(entry, entityTargetOrigin.currentTarget);
             return;
@@ -108,5 +109,10 @@ export class EnemyService {
       }
 
       entityTargetOrigin.currentTarget = null;
+   }
+
+   handleCollision(sprite1, sprite2) {
+      console.log('Collision detected between sprite1 and sprite2');
+      // Handle collision logic here
    }
 }

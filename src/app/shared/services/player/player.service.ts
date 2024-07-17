@@ -23,12 +23,11 @@ export class PlayerService {
    }
 
    public initializePlayer(platforms: Phaser.Physics.Arcade.StaticGroup, buildingsGroup: Phaser.Physics.Arcade.Group, targetOrigin: Target): void {
-      const realPlayerSize = 100 * Math.floor(window.innerHeight / 1000);
-      this.entity = GameScene.physics.add.sprite(realPlayerSize, window.innerHeight - realPlayerSize, PlayerState.player.name);
-      this.entity.displayHeight = realPlayerSize;
-      this.entity.displayWidth = realPlayerSize;
+      this.entity = GameScene.physics.add.sprite(100, window.innerHeight - 100, PlayerState.player.name);
+      this.entity.displayHeight = 100;
+      this.entity.displayWidth = 100;
       this.entity.name = PlayerState.player.name;
-      this.entity['targetOrigin'] = targetOrigin;
+      this.entity['targetOrigin'] = PlayerState.player;
 
       this.entity.setBounce(0.2);
       this.entity.setCollideWorldBounds(true);
@@ -48,7 +47,7 @@ export class PlayerService {
       this.playerMovementService.restrictPartialActionsInAreas(buildingsGroup, this.entity);
 
       // if (target.pushNotifications.length) {
-      //    const numberText = GameScene.add.text(this.entity.x - 10, this.entity.y - this.entity.displayHeight / 2, '5', {
+      //    const numberText = GameScene.add.text(this.entity.x - 10, this.entity.y - this.entity.displayHeight / 2, target.pushNotifications[0].value, {
       //       fontSize: '32px',
       //       color: '#ffffff',
       //    });
@@ -67,9 +66,9 @@ export class PlayerService {
       //          return;
       //       }
 
-      //       notification['settings'].size -= 1;
-      //       notification.setX(this.entity.x - 10);
-      //       notification.setY(notification.y - 1);
+      //       notification['settings'].size -= 0.2;
+      //       notification.setX(this.entity.x - (50 - notification['settings'].size));
+      //       notification.setY(notification.y - 0.2);
       //       notification.setFontSize(notification['settings'].size);
       //    });
       // }
