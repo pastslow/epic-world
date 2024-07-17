@@ -3,7 +3,6 @@ import { AnimationFrame } from '~/src/app/features/models/animation-frame.model'
 import { GameCursors } from '~/src/app/features/models/game-cursors.model';
 import { GameScene } from '~/src/app/features/models/game-scene.model';
 import { PlayerState } from '~/src/app/features/state-models/player-state.model';
-import { TimeStamp } from '~/src/app/features/state-models/time-stamp.model';
 import { ImageFrame } from '../../interfaces/image-frames.interface';
 import { Target } from '../../interfaces/target.interface';
 import { PlayerAttackService } from './player-attack.service';
@@ -45,33 +44,6 @@ export class PlayerService {
    public listenToPlayerActions(buildingsGroup: Phaser.Physics.Arcade.Group): void {
       const target: Target = this.entity['targetOrigin'];
       this.playerMovementService.restrictPartialActionsInAreas(buildingsGroup, this.entity);
-
-      // if (target.pushNotifications.length) {
-      //    const numberText = GameScene.add.text(this.entity.x - 10, this.entity.y - this.entity.displayHeight / 2, target.pushNotifications[0].value, {
-      //       fontSize: '32px',
-      //       color: '#ffffff',
-      //    });
-      //    numberText['settings'] = target.pushNotifications[0];
-      //    numberText['settings'].size = 32;
-
-      //    target.pushNotifications = [];
-      //    this.playerNotifications.push(numberText);
-      // }
-
-      // if (this.playerNotifications.length) {
-      //    this.playerNotifications.forEach((notification: Phaser.GameObjects.Text, index: number) => {
-      //       if (notification['settings'].duration + notification['settings'].currentTime < TimeStamp.now) {
-      //          notification.destroy();
-      //          this.playerNotifications.splice(index, 1);
-      //          return;
-      //       }
-
-      //       notification['settings'].size -= 0.2;
-      //       notification.setX(this.entity.x - (50 - notification['settings'].size));
-      //       notification.setY(notification.y - 0.2);
-      //       notification.setFontSize(notification['settings'].size);
-      //    });
-      // }
 
       if (target.combatAttributes.isAttacking) {
          this.playerAttackService.animAttack(this.entity);
