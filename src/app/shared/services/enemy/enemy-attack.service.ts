@@ -11,9 +11,12 @@ export class EnemyAttackService {
       const monsterTargetOrigin = monster['targetOrigin'];
       const currentMonsterTarget = monsterTargetOrigin.currentTarget.targetOrigin as Target;
 
+      monsterTargetOrigin.physicalAttributes.movementForbidden = true;
+
       if (monster.anims.currentAnim.key === 'attack' && monster.anims.currentFrame.isLast) {
+         monsterTargetOrigin.physicalAttributes.movementForbidden = false;
+
          const damageDealt = DamageProvider.getDamageDealtToTarget(monsterTargetOrigin.combatAttributes, currentMonsterTarget);
-         console.log(damageDealt);
 
          if (damageDealt.type !== DamageType.BLOCK && typeof damageDealt.value === 'number') {
             currentMonsterTarget.combatAttributes.currentHealth -= damageDealt.value;

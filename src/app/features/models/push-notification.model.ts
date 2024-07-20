@@ -36,10 +36,6 @@ export class PushNotifications {
       this.notifications.forEach((notification: PushNotification, index: number) => {
          const attachedTargetPositionX = notification.settings.attachedTarget.x;
          const attachedTargetWidth = notification.settings.attachedTarget.displayWidth / 2;
-         const isTargetFlippedX = notification.settings.attachedTarget.flipX;
-         const centerTargetXPosition = isTargetFlippedX
-            ? attachedTargetPositionX + (attachedTargetWidth - notification.settings.size)
-            : attachedTargetPositionX - (attachedTargetWidth - notification.settings.size);
 
          if (notification.settings.duration + notification.settings.currentTime < TimeStamp.now) {
             notification.destroy();
@@ -48,7 +44,7 @@ export class PushNotifications {
          }
 
          notification.settings.size -= 0.2;
-         notification.setX(centerTargetXPosition);
+         notification.setX(attachedTargetPositionX - attachedTargetWidth);
          notification.setY(notification.y - 0.2);
          notification.setFontSize(notification.settings.size);
       });

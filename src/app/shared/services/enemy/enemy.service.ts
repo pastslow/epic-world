@@ -65,13 +65,9 @@ export class EnemyService {
          }
 
          if (
-            TargetActions.isTargetInActionEntityRange(
-               entityTargetOrigin.currentTarget.x,
-               entityTargetOrigin.currentTarget.displayWidth,
-               entry.x,
-               entry.displayWidth
-            ) &&
-            !GameScene.physics.world.overlap(entry, entityTargetOrigin.currentTarget)
+            !TargetActions.isTargetInActionEntityRange(entry, player) &&
+            entityTargetOrigin.combatAttributes.pauseStartTime === 0 &&
+            !entityTargetOrigin.physicalAttributes.movementForbidden
          ) {
             this.enemyMovementService.animEntityMovement(entry, entityTargetOrigin.currentTarget);
             return;
@@ -109,10 +105,5 @@ export class EnemyService {
       }
 
       entityTargetOrigin.currentTarget = null;
-   }
-
-   handleCollision(sprite1, sprite2) {
-      console.log('Collision detected between sprite1 and sprite2');
-      // Handle collision logic here
    }
 }

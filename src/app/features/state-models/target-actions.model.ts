@@ -9,11 +9,18 @@ export class TargetActions {
       return targetOffsetLeft < entityPosition - enemySize / 2 - entityRange;
    }
 
-   public static isTargetInActionEntityRange(targetOffsetLeft: number, targetSize: number, entityX: number, entitySize: number): boolean {
-      const isTargetAheadEnemy = this.isTargetAheadEntity(targetOffsetLeft, entityX, entitySize, targetSize);
-      const isTargetBehindEntity = this.isTargetBehindEntity(targetOffsetLeft, entityX, targetSize);
+   static isTargetInActionEntityRange(
+      entity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody,
+      monster: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
+   ): boolean {
+      const playerBounds = entity.getBounds();
+      const monsterBounds = monster.getBounds();
 
-      return isTargetAheadEnemy || isTargetBehindEntity;
+      const overlapX = Math.max(0, Math.min(playerBounds.right, monsterBounds.right) - Math.max(playerBounds.left, monsterBounds.left));
+
+      const halfMonsterArea = monsterBounds.width / 2;
+
+      return overlapX >= halfMonsterArea;
    }
 
    public static updateActionsPause(entity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody) {

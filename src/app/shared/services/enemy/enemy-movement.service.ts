@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { TargetActions } from '~/src/app/features/state-models/target-actions.model';
 import { Target } from '../../interfaces/target.interface';
 
 @Injectable({ providedIn: 'root' })
@@ -8,8 +7,8 @@ export class EnemyMovementService {
       entity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody,
       collidedEntity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
    ): void {
-      const playerComesFromRight = TargetActions.isTargetAheadEntity(collidedEntity.x, entity.x, entity.displayWidth, collidedEntity.displayWidth, 50);
-      const playerComesFromLeft = TargetActions.isTargetBehindEntity(collidedEntity.x, entity.x, collidedEntity.displayHeight, 50);
+      const playerComesFromRight = collidedEntity.x >= entity.x;
+      const playerComesFromLeft = collidedEntity.x < entity.x;
 
       if (playerComesFromRight) {
          entity.anims.play('walk', true);
