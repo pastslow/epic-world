@@ -3,6 +3,7 @@ import { AnimationFrame } from '~/src/app/features/models/animation-frame.model'
 import { GameCursors } from '~/src/app/features/models/game-cursors.model';
 import { GameScene } from '~/src/app/features/models/game-scene.model';
 import { PlayerState } from '~/src/app/features/state-models/player-state.model';
+import { TargetActions } from '~/src/app/features/state-models/target-actions.model';
 import { ImageFrame } from '../../interfaces/image-frames.interface';
 import { Target } from '../../interfaces/target.interface';
 import { JoystickService } from '../joystick.service';
@@ -49,17 +50,15 @@ export class PlayerService {
    public listenToPlayerActions(buildingsGroup: Phaser.Physics.Arcade.Group): void {
       const target: Target = this.entity['targetOrigin'];
       this.playerMovementService.restrictPartialActionsInAreas(buildingsGroup, this.entity);
+      TargetActions.updateActionsPause(this.entity);
 
-      if (target.combatAttributes.isAttacking) {
-         this.playerAttackService.animAttack(this.entity);
-         return;
+      if (GameCursors.keyboardControls.space.isDown && target.combatAttributes.pauseStartTime === 0) {
+         this.entity['targetOrigin'].combatAttributes.isAttacking = true;
       }
 
-      if (GameCursors.keyboardControls.space.isDown) {
-         if (!target.combatAttributes.isAttacking) {
-            target.combatAttributes.isAttacking = true;
-            return;
-         }
+      if (this.entity['targetOrigin'].combatAttributes.isAttacking) {
+         this.playerAttackService.animAttack(this.entity);
+         return;
       }
 
       const joystick = this.joystickService.getJoystickSimulatedKey();

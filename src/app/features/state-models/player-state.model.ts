@@ -25,6 +25,8 @@ export class PlayerState {
          miningCritChance: 0,
          initialPositionX: 400,
          initialPositionY: 40,
+         pauseBetweenAttack: 300,
+         pauseStartTime: 0,
       },
       physicalAttributes: {
          speed: 10,
