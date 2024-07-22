@@ -6,21 +6,21 @@ export class PushNotifications {
    private static notifications: PushNotification[] = [];
 
    public static addNotification(notification: PushNotification): void {
+      const attachedTargetWidth = notification.settings.attachedTarget.displayWidth / 2;
       const attachedTargetPositionX = notification.settings.attachedTarget.x;
       const attachedTargetPositionY = notification.settings.attachedTarget.y;
-      const attachedTargetWidth = notification.settings.attachedTarget.displayWidth / 2;
       const attachedTargetHeight = notification.settings.attachedTarget.displayHeight / 2;
 
       const text: PushNotification = GameScene.add.text(
-         attachedTargetPositionX,
+         attachedTargetPositionX - attachedTargetWidth,
          attachedTargetPositionY - attachedTargetHeight,
          notification.settings.value.toString(),
          {
-            fontSize: '32px',
+            fontSize: '24px',
             color: '#ffffff',
          }
       );
-      notification.settings.size = 32;
+      notification.settings.size = 24;
       notification.settings.duration = 500;
       notification.settings.currentTime = TimeStamp.now;
       text.settings = { ...notification.settings };
@@ -35,7 +35,9 @@ export class PushNotifications {
 
       this.notifications.forEach((notification: PushNotification, index: number) => {
          const attachedTargetPositionX = notification.settings.attachedTarget.x;
-         const attachedTargetWidth = notification.settings.attachedTarget.displayWidth / 2;
+         const attachedTargetWidth = notification.settings.attachedTarget.flipX
+            ? 0
+            : notification.settings.attachedTarget.displayWidth / 2 - notification.settings.size;
 
          if (notification.settings.duration + notification.settings.currentTime < TimeStamp.now) {
             notification.destroy();
@@ -43,10 +45,9 @@ export class PushNotifications {
             return;
          }
 
-         notification.settings.size -= 0.2;
          notification.setX(attachedTargetPositionX - attachedTargetWidth);
-         notification.setY(notification.y - 0.2);
-         notification.setFontSize(notification.settings.size);
+         notification.setY(notification.y - 0.5);
+         notification.setAlpha(notification.alpha - 0.025);
       });
    }
 }
