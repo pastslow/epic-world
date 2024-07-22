@@ -24,6 +24,7 @@
       "@capacitor/status-bar": "^4.1.1",
       "@hugotomazi/capacitor-navigation-bar": "^2.0.0",
       "phaser": "3.80.1",
+      "phaser3-rex-plugins": "^1.80.5",
       "rxjs": "~7.5.0",
       "tslib": "^2.3.0",
       "zone.js": "~0.14.2"

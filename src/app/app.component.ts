@@ -16,6 +16,8 @@ import { TimeStamp } from './features/state-models/time-stamp.model';
 import { BuildingsService } from './shared/services/buildings.service';
 import { EnemyService } from './shared/services/enemy/enemy.service';
 import { PlayerService } from './shared/services/player/player.service';
+import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
+import { JoystickService } from './shared/services/joystick.service';
 
 @Component({
    selector: 'app-root',
@@ -43,12 +45,22 @@ export class AppComponent implements OnInit {
             debug: true,
          },
       },
+      plugins: {
+         global: [
+            {
+               key: 'rexVirtualJoystick',
+               plugin: VirtualJoystickPlugin,
+               start: true,
+            },
+         ],
+      },
    };
 
    constructor(
       private readonly playerService: PlayerService,
       private readonly buildingService: BuildingsService,
-      private readonly enemyService: EnemyService
+      private readonly enemyService: EnemyService,
+      private readonly joystickService: JoystickService
    ) {}
 
    public ngOnInit(): void {
@@ -86,6 +98,8 @@ export class AppComponent implements OnInit {
 
       GameScene.cameras.main.setBounds(0, 0, MapExtras.mapSize, window.innerHeight);
       GameScene.cameras.main.startFollow(this.playerService.entity, true, 0.08, 0.08);
+
+      this.joystickService.initializeJoystick();
    }
 
    public update(): void {

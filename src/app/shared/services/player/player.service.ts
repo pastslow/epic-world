@@ -5,6 +5,7 @@ import { GameScene } from '~/src/app/features/models/game-scene.model';
 import { PlayerState } from '~/src/app/features/state-models/player-state.model';
 import { ImageFrame } from '../../interfaces/image-frames.interface';
 import { Target } from '../../interfaces/target.interface';
+import { JoystickService } from '../joystick.service';
 import { PlayerAttackService } from './player-attack.service';
 import { PlayerMovementService } from './player-movement.service';
 
@@ -15,7 +16,11 @@ export class PlayerService {
    public entity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
    public playerNotifications: any[] = []; // Variable to hold the group of notifications
 
-   constructor(private playerMovementService: PlayerMovementService, private playerAttackService: PlayerAttackService) {}
+   constructor(
+      private playerMovementService: PlayerMovementService,
+      private playerAttackService: PlayerAttackService,
+      private readonly joystickService: JoystickService
+   ) {}
 
    public loadPlayer(): void {
       GameScene.load.spritesheet(PlayerState.player.name, PlayerState.player.image, { frameWidth: 48, frameHeight: 48 });
@@ -57,8 +62,10 @@ export class PlayerService {
          }
       }
 
-      this.playerMovementService.animEntityMovement(this.entity);
-      this.playerMovementService.animEntityJumping(this.entity);
+      const joystick = this.joystickService.getJoystickSimulatedKey();
+
+      this.playerMovementService.animEntityMovement(this.entity, joystick);
+      this.playerMovementService.animEntityJumping(this.entity, joystick);
    }
 
    private generatePlayerAnimations(): void {
