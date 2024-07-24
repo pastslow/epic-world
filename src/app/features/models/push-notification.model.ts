@@ -17,7 +17,8 @@ export class PushNotifications {
          notification.settings.value.toString(),
          {
             fontSize: '24px',
-            color: '#ffffff',
+            color: notification.settings.type === DamageType.CRITICAL ? 'red' : 'white',
+            fontFamily: 'SurvivalKit',
          }
       );
       notification.settings.size = 24;

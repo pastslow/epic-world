@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AnimationFrame } from '~/src/app/features/models/animation-frame.model';
 import { GameScene } from '~/src/app/features/models/game-scene.model';
+import { HealthBar } from '~/src/app/features/models/health-bar.model';
 import { EnemyState } from '~/src/app/features/state-models/enemy-state.model';
 import { TargetActions } from '~/src/app/features/state-models/target-actions.model';
+import { DynamicBody } from '../../interfaces/dynamic-body.interface';
 import { ImageFrame } from '../../interfaces/image-frames.interface';
 import { Target } from '../../interfaces/target.interface';
 
@@ -21,20 +23,21 @@ export class EnemyService {
       this.enemiesGroup = GameScene.physics.add.group();
 
       EnemyState.enemies.forEach((enemy: Target) => {
-         const entity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody = GameScene.physics.add.sprite(
+         const entity: DynamicBody = GameScene.physics.add.sprite(
             enemy.combatAttributes.initialPositionX,
             window.innerHeight - enemy.physicalAttributes.height,
             enemy.name
          );
 
+         entity.setBodySize(enemy.combatAttributes.viewRange, 0, true);
+
          entity.name = enemy.name;
-         entity['targetOrigin'] = enemy;
+         entity.targetOrigin = enemy;
          entity.displayHeight = enemy.physicalAttributes.width;
          entity.displayWidth = enemy.physicalAttributes.height;
 
          entity.setBounce(0.2);
          entity.setCollideWorldBounds(true);
-         entity.setImmovable(true);
 
          this.generatePlayerAnimations(enemy, entity);
 
@@ -47,10 +50,12 @@ export class EnemyService {
    }
 
    public listerToMonstersActions(player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody): void {
-      this.enemiesGroup.children.entries.forEach((entry: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody) => {
-         this.setCurrentTarget(entry, [player]);
+      this.enemiesGroup.children.entries.forEach((entry: DynamicBody) => {
+         const entityTargetOrigin: Target = entry.targetOrigin;
+         if (entityTargetOrigin['healthBar']) {
+            HealthBar.updateHealthBar(entry, entityTargetOrigin['healthBar']);
+         }
 
-         const entityTargetOrigin: Target = entry['targetOrigin'];
          TargetActions.updateActionsPause(entry);
 
          if (!entityTargetOrigin.currentTarget) {
@@ -61,6 +66,13 @@ export class EnemyService {
 
             entry.setVelocityX(0);
             entry.anims.play('idle', true);
+            return;
+         }
+
+         const currentTargetWentOutOfRange = Math.abs(entry.x - entityTargetOrigin.currentTarget.x) > entry.body.width;
+
+         if (currentTargetWentOutOfRange) {
+            entityTargetOrigin.currentTarget = null;
             return;
          }
 
@@ -82,28 +94,18 @@ export class EnemyService {
       });
    }
 
-   private generatePlayerAnimations(targetState: Target, entity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody): void {
+   public handleTargetOverlap(overlappedEntity: DynamicBody, entity: DynamicBody): void {
+      entity.targetOrigin.currentTarget = overlappedEntity;
+
+      if (!entity.targetOrigin['healthBar']) {
+         const healthBar = GameScene.add.graphics();
+         entity.targetOrigin['healthBar'] = healthBar;
+      }
+   }
+
+   private generatePlayerAnimations(targetState: Target, entity: DynamicBody): void {
       targetState.imageFrames.forEach((frame: ImageFrame) => {
          AnimationFrame.create(entity, frame.name, targetState.name, frame.start, frame.end, frame.repeatable, frame.fps);
       });
-   }
-
-   private setCurrentTarget(entity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody, entries: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody[]): void {
-      const entityTargetOrigin = entity['targetOrigin'];
-
-      if (entityTargetOrigin.combatAttributes.currentHealth <= 0) {
-         return;
-      }
-
-      const entry = entries.find((entry: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody) => {
-         return Math.abs(entry.x - entity.x) <= entityTargetOrigin.combatAttributes.viewRange;
-      });
-
-      if (entry) {
-         entityTargetOrigin.currentTarget = entry;
-         return;
-      }
-
-      entityTargetOrigin.currentTarget = null;
    }
 }

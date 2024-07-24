@@ -91,7 +91,7 @@ export class AppComponent implements OnInit {
 
       MapExtras.initializeGrass(100);
       this.buildingService.initializeBuildings();
-      this.playerService.initializePlayer(MapExtras.tiles, this.buildingService.buildingsGroup, this.player);
+      this.playerService.initializePlayer(MapExtras.tiles);
       this.enemyService.initializeEnemies(MapExtras.tiles);
       MapExtras.initializeGrass(40);
       MapExtras.initializeTiles();
@@ -99,14 +99,15 @@ export class AppComponent implements OnInit {
       GameScene.cameras.main.setBounds(0, 0, MapExtras.mapSize, window.innerHeight);
       GameScene.cameras.main.startFollow(this.playerService.entity, true, 0.08, 0.08);
 
+      GameScene.physics.add.overlap(this.enemyService.enemiesGroup, this.playerService.entity, this.enemyService.handleTargetOverlap);
+
       this.joystickService.initializeJoystick();
    }
 
    public update(): void {
       TimeStamp.now = new Date().getTime();
 
-      this.playerService.listenToPlayerActions(this.buildingService.buildingsGroup);
-
+      this.playerService.listenToPlayerActions();
       this.enemyService.listerToMonstersActions(this.playerService.entity);
 
       PushNotifications.listenToNotifications();

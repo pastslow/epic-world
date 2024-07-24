@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
+import { DynamicBody } from '../../interfaces/dynamic-body.interface';
 import { Target } from '../../interfaces/target.interface';
 
 @Injectable({ providedIn: 'root' })
 export class EnemyMovementService {
-   public animEntityMovement(
-      entity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody,
-      collidedEntity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
-   ): void {
+   public animEntityMovement(entity: DynamicBody, collidedEntity: DynamicBody): void {
       const playerComesFromRight = collidedEntity.x >= entity.x;
       const playerComesFromLeft = collidedEntity.x < entity.x;
 

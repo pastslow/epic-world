@@ -7,7 +7,7 @@ export class DamageProvider {
       const hasBlockedTheAttack = this.hasBlockedTheAttack(target.combatAttributes.blockChance);
 
       if (hasBlockedTheAttack) {
-         return { type: DamageType.BLOCK, value: DamageType.BLOCK };
+         return { type: DamageType.BLOCK, value: '🛡️' };
       }
 
       const damageDealt = this.getDamage(entityCombatAttributes);
