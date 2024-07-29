@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DamageProvider } from '~/src/app/features/models/damage-provider.model';
+import { GameScene } from '~/src/app/features/models/game-scene.model';
 import { PushNotification, PushNotifications } from '~/src/app/features/models/push-notification.model';
+import { TargetActions } from '~/src/app/features/state-models/target-actions.model';
 import { TimeStamp } from '~/src/app/features/state-models/time-stamp.model';
 import { GameCursors } from '../../../features/models/game-cursors.model';
 import { DamageType } from '../../enums/damage-type.enum';
@@ -25,11 +27,22 @@ export class PlayerAttackService {
          entity.targetOrigin.combatAttributes.isAttacking = false;
 
          if (entity.targetOrigin.currentTargets.length) {
-            entity.targetOrigin.currentTargets.forEach((target: DynamicBody) => {
+            entity.targetOrigin.currentTargets.forEach((target: DynamicBody, index: number) => {
+               if (target.targetOrigin.combatAttributes.currentHealth <= 0) {
+                  entity.targetOrigin.currentTargets.splice(index, 1);
+                  return;
+               }
+
                const damageDealt = DamageProvider.getDamageDealtToTarget(entity.targetOrigin.combatAttributes, target.targetOrigin);
 
                if (damageDealt.type !== DamageType.BLOCK && typeof damageDealt.value === 'number') {
                   target.targetOrigin.combatAttributes.currentHealth -= damageDealt.value;
+
+                  TargetActions.setTargetBodyAsHurt(target);
+
+                  if (target.targetOrigin.combatAttributes.currentHealth <= 0) {
+                     entity.targetOrigin.currentTargets.splice(index, 1);
+                  }
                }
 
                PushNotifications.addNotification({

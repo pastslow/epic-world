@@ -5,6 +5,8 @@ export class GameScene {
    public static add: Phaser.GameObjects.GameObjectFactory;
    public static input: Phaser.Input.InputPlugin;
    public static plugins: Phaser.Plugins.PluginManager;
+   public static make: Phaser.GameObjects.GameObjectCreator;
+   public static time: Phaser.Time.Clock;
 
    public static initGameScene(phaserGame: Phaser.Game) {
       this.physics = phaserGame.scene.getScene('default').physics;
@@ -13,5 +15,7 @@ export class GameScene {
       this.add = phaserGame.scene.getScene('default').add;
       this.input = phaserGame.scene.getScene('default').input;
       this.plugins = phaserGame.scene.getScene('default').plugins;
+      this.make = phaserGame.scene.getScene('default').make;
+      this.time = phaserGame.scene.getScene('default').time;
    }
 }

@@ -18,6 +18,7 @@ import { EnemyService } from './shared/services/enemy/enemy.service';
 import { PlayerService } from './shared/services/player/player.service';
 import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
 import { JoystickService } from './shared/services/joystick.service';
+import { Particles } from './features/models/particles.model';
 
 @Component({
    selector: 'app-root',
@@ -42,7 +43,7 @@ export class AppComponent implements OnInit {
          default: 'arcade',
          arcade: {
             gravity: { y: 600, x: 0 },
-            debug: true,
+            debug: false,
          },
       },
       plugins: {
@@ -77,6 +78,7 @@ export class AppComponent implements OnInit {
       Parallax.loadParallaxBackgrounds();
       MapExtras.loadMapExtras();
       AssetsLoader.loadAssets(BuildingsState.buildings, false);
+      Particles.loadParticles();
 
       this.buildingService.loadBuildings();
    }
@@ -95,6 +97,7 @@ export class AppComponent implements OnInit {
       this.enemyService.initializeTarget(MapExtras.tiles);
       MapExtras.initializeGrass(40);
       MapExtras.initializeTiles();
+      Particles.initializeParticlesEffects();
 
       GameScene.cameras.main.setBounds(0, 0, MapExtras.mapSize, window.innerHeight);
       GameScene.cameras.main.startFollow(this.playerService.dynamicEntries.children.entries[0], true, 0.08, 0.08);

@@ -1,3 +1,5 @@
+import { DynamicBody } from '../../shared/interfaces/dynamic-body.interface';
+import { GameScene } from '../models/game-scene.model';
 import { TimeStamp } from './time-stamp.model';
 
 export class TargetActions {
@@ -30,5 +32,13 @@ export class TargetActions {
       if (hadEnoughPause) {
          entity['targetOrigin'].combatAttributes.pauseStartTime = 0;
       }
+   }
+
+   public static setTargetBodyAsHurt(targetBody: DynamicBody) {
+      targetBody.setTint(0xff0000);
+
+      GameScene.time.delayedCall(100, () => {
+         targetBody.clearTint();
+      });
    }
 }

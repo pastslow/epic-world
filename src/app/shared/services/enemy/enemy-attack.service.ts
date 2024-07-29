@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DamageProvider } from '~/src/app/features/models/damage-provider.model';
 import { PushNotification, PushNotifications } from '~/src/app/features/models/push-notification.model';
+import { TargetActions } from '~/src/app/features/state-models/target-actions.model';
 import { TimeStamp } from '../../../features/state-models/time-stamp.model';
 import { DamageType } from '../../enums/damage-type.enum';
 import { Target } from '../../interfaces/target.interface';
@@ -20,6 +21,7 @@ export class EnemyAttackService {
 
          if (damageDealt.type !== DamageType.BLOCK && typeof damageDealt.value === 'number') {
             currentMonsterTarget.combatAttributes.currentHealth -= damageDealt.value;
+            TargetActions.setTargetBodyAsHurt(monsterTargetOrigin.currentTargets[0]);
          }
 
          PushNotifications.addNotification({

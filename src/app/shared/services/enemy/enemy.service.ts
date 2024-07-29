@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { GameScene } from '~/src/app/features/models/game-scene.model';
 import { HealthBar } from '~/src/app/features/models/health-bar.model';
+import { Particles } from '~/src/app/features/models/particles.model';
 import { TargetContainerSetup } from '~/src/app/features/models/target-container-setup.model';
 import { EnemyState } from '~/src/app/features/state-models/enemy-state.model';
 import { TargetActions } from '~/src/app/features/state-models/target-actions.model';
+import { DynamicBody } from '../../interfaces/dynamic-body.interface';
 import { DynamicTarget } from '../../interfaces/dynamic-target.interface';
 import { TargetContainer } from '../../interfaces/target-container.interface';
 import { Target } from '../../interfaces/target.interface';
@@ -42,6 +44,11 @@ export class EnemyService extends TargetContainerSetup implements DynamicTarget 
 
          if (entityTargetOrigin.healthBar) {
             HealthBar.updateHealthBar(dynamicBody, entityTargetOrigin.healthBar);
+         }
+
+         if (entityTargetOrigin.combatAttributes.currentHealth <= 0) {
+            this.handleDeath(dynamicBody, targetContainer);
+            return;
          }
 
          TargetActions.updateActionsPause(dynamicBody);
@@ -88,6 +95,17 @@ export class EnemyService extends TargetContainerSetup implements DynamicTarget 
       if (!targetContainer.dynamicBody.targetOrigin.healthBar) {
          const healthBar = GameScene.add.graphics();
          targetContainer.dynamicBody.targetOrigin.healthBar = healthBar;
+      }
+   }
+
+   private handleDeath(dynamicBody: DynamicBody, targetContainer: TargetContainer): void {
+      dynamicBody.setVelocityX(0);
+      dynamicBody.anims.play('death', true);
+
+      if (dynamicBody.anims.currentAnim.key === 'death' && dynamicBody.anims.currentFrame.isLast) {
+         this.targetsContainer.remove(targetContainer, true, true);
+         targetContainer.dynamicBody.targetOrigin.healthBar.destroy(true);
+         this.dynamicEntries.remove(targetContainer.dynamicBody, true, true);
       }
    }
 }
