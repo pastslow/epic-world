@@ -26,7 +26,7 @@ export class DamageProvider {
       const minAttack = entityCombatAttributes.minAttack;
       const maxAttack = entityCombatAttributes.maxAttack;
 
-      return minAttack + Math.round(Math.random() * maxAttack);
+      return Math.floor(Math.random() * (maxAttack - minAttack + 1)) + minAttack;
    }
 
    private static hasBlockedTheAttack(blockChance: number): boolean {

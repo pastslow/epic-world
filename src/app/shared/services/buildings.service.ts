@@ -16,16 +16,12 @@ export class BuildingsService {
 
    public initializeBuildings(): void {
       BuildingsState.buildings.forEach((entity: Target) => {
-         let building: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
+         let building: Phaser.GameObjects.Image;
          const posY = entity.physicalAttributes.initialPositionY;
 
          this.buildingsGroup = GameScene.physics.add.group();
 
-         building = GameScene.physics.add.image(entity.physicalAttributes.initialPosition, window.innerHeight - posY, entity.name);
-
-         building.setBounce(0.2);
-         building.setCollideWorldBounds(true);
-         building.setImmovable(true);
+         building = GameScene.add.image(entity.physicalAttributes.initialPosition, window.innerHeight - posY, entity.name);
          building.setName(entity.name);
          building.postFX.addShine();
 

@@ -91,15 +91,16 @@ export class AppComponent implements OnInit {
 
       MapExtras.initializeGrass(100);
       this.buildingService.initializeBuildings();
-      this.playerService.initializePlayer(MapExtras.tiles);
-      this.enemyService.initializeEnemies(MapExtras.tiles);
+      this.playerService.initializeTarget(MapExtras.tiles);
+      this.enemyService.initializeTarget(MapExtras.tiles);
       MapExtras.initializeGrass(40);
       MapExtras.initializeTiles();
 
       GameScene.cameras.main.setBounds(0, 0, MapExtras.mapSize, window.innerHeight);
-      GameScene.cameras.main.startFollow(this.playerService.entity, true, 0.08, 0.08);
+      GameScene.cameras.main.startFollow(this.playerService.dynamicEntries.children.entries[0], true, 0.08, 0.08);
 
-      GameScene.physics.add.overlap(this.enemyService.enemiesGroup, this.playerService.entity, this.enemyService.handleTargetOverlap);
+      GameScene.physics.add.overlap(this.enemyService.targetsContainer, this.playerService.dynamicEntries, this.enemyService.handleTargetOverlap);
+      GameScene.physics.add.overlap(this.playerService.targetsContainer, this.enemyService.dynamicEntries, this.playerService.handleTargetOverlap);
 
       this.joystickService.initializeJoystick();
    }
@@ -107,8 +108,8 @@ export class AppComponent implements OnInit {
    public update(): void {
       TimeStamp.now = new Date().getTime();
 
-      this.playerService.listenToPlayerActions();
-      this.enemyService.listerToMonstersActions(this.playerService.entity);
+      this.playerService.listenToTargetActions();
+      this.enemyService.listenToTargetActions();
 
       PushNotifications.listenToNotifications();
    }

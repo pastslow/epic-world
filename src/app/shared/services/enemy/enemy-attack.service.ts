@@ -9,7 +9,7 @@ import { Target } from '../../interfaces/target.interface';
 export class EnemyAttackService {
    public animAttack(monster: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody): void {
       const monsterTargetOrigin = monster['targetOrigin'];
-      const currentMonsterTarget = monsterTargetOrigin.currentTarget.targetOrigin as Target;
+      const currentMonsterTarget = monsterTargetOrigin.currentTargets[0].targetOrigin as Target;
 
       monsterTargetOrigin.physicalAttributes.movementForbidden = true;
 
@@ -23,7 +23,7 @@ export class EnemyAttackService {
          }
 
          PushNotifications.addNotification({
-            settings: { ...damageDealt, attachedTarget: monsterTargetOrigin.currentTarget },
+            settings: { ...damageDealt, attachedTarget: monsterTargetOrigin.currentTargets[0] },
          } as PushNotification);
 
          monsterTargetOrigin.combatAttributes.pauseStartTime = TimeStamp.now;

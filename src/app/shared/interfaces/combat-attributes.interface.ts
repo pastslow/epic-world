@@ -14,6 +14,7 @@ export interface CombatAttributes {
    miningCritChance?: number;
    respawnDuration?: number;
    viewRange?: number;
+   attackRange?: number;
    pauseBetweenAttack?: number;
    pauseStartTime?: number;
    initialPositionX?: number;

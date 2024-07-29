@@ -27,9 +27,13 @@ export class PlayerState {
          initialPositionY: 40,
          pauseBetweenAttack: 300,
          pauseStartTime: 0,
+         attackRange: 50,
+         viewRange: 50,
       },
       physicalAttributes: {
          speed: 10,
+         width: 100,
+         height: 100,
       },
       imageFrames: [
          {
@@ -62,5 +66,6 @@ export class PlayerState {
          },
       ],
       pushNotifications: [],
+      currentTargets: [],
    };
 }

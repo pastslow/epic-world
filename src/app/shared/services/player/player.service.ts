@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AnimationFrame } from '~/src/app/features/models/animation-frame.model';
 import { GameCursors } from '~/src/app/features/models/game-cursors.model';
 import { GameScene } from '~/src/app/features/models/game-scene.model';
+import { TargetContainerSetup } from '~/src/app/features/models/target-container-setup.model';
 import { PlayerState } from '~/src/app/features/state-models/player-state.model';
 import { TargetActions } from '~/src/app/features/state-models/target-actions.model';
 import { DynamicBody } from '../../interfaces/dynamic-body.interface';
-import { ImageFrame } from '../../interfaces/image-frames.interface';
+import { DynamicTarget } from '../../interfaces/dynamic-target.interface';
+import { TargetContainer } from '../../interfaces/target-container.interface';
 import { Target } from '../../interfaces/target.interface';
 import { JoystickService } from '../joystick.service';
 import { PlayerAttackService } from './player-attack.service';
@@ -14,46 +15,42 @@ import { PlayerMovementService } from './player-movement.service';
 @Injectable({
    providedIn: 'root',
 })
-export class PlayerService {
+export class PlayerService extends TargetContainerSetup implements DynamicTarget {
+   public targetsContainer: Phaser.GameObjects.Group;
+   public dynamicEntries: Phaser.Physics.Arcade.Group;
+
    public entity: DynamicBody;
-   public playerNotifications: any[] = []; // Variable to hold the group of notifications
 
    constructor(
       private playerMovementService: PlayerMovementService,
       private playerAttackService: PlayerAttackService,
-      private readonly joystickService: JoystickService
-   ) {}
-
-   public loadPlayer(): void {
-      GameScene.load.spritesheet(PlayerState.player.name, PlayerState.player.image, { frameWidth: 48, frameHeight: 48 });
+      private joystickService: JoystickService
+   ) {
+      super();
    }
 
-   public initializePlayer(platforms: Phaser.Physics.Arcade.StaticGroup): void {
-      this.entity = GameScene.physics.add.sprite(100, window.innerHeight - 100, PlayerState.player.name);
-      this.entity.displayHeight = 100;
-      this.entity.displayWidth = 100;
-      this.entity.name = PlayerState.player.name;
-      this.entity.targetOrigin = PlayerState.player;
+   public initializeTarget(platforms: Phaser.Physics.Arcade.StaticGroup): void {
+      this.targetsContainer = GameScene.add.group();
+      this.dynamicEntries = GameScene.physics.add.group();
 
-      this.entity.setBodySize(25, 0, true); //TODO maybe this coyld make the player more accurate
+      const targetContainer = this.getTargetContainer(PlayerState.player, platforms);
+      targetContainer.dynamicBody.body.setSize(PlayerState.player.physicalAttributes.width / 4, 0, true);
 
-      this.entity.setBounce(0.2);
-      this.entity.setCollideWorldBounds(true);
-      this.generatePlayerAnimations();
-
-      // --- initialize default animation for player --- //
-      this.entity.anims.play('idle', true);
-
-      GameScene.physics.add.collider(this.entity, platforms);
+      this.targetsContainer.add(targetContainer);
+      this.dynamicEntries.add(targetContainer.dynamicBody);
+      this.entity = targetContainer.dynamicBody;
    }
 
-   public listenToPlayerActions(): void {
+   public listenToTargetActions(): void {
       const target: Target = this.entity.targetOrigin;
       TargetActions.updateActionsPause(this.entity);
+      this.updateTargetContainerPosition(this.entity.targetContainer, this.entity);
 
       if (GameCursors.keyboardControls.space.isDown && target.combatAttributes.pauseStartTime === 0) {
          this.entity.targetOrigin.combatAttributes.isAttacking = true;
       }
+
+      this.removeOutRangeTargets(target);
 
       if (this.entity.targetOrigin.combatAttributes.isAttacking) {
          this.playerAttackService.animAttack(this.entity);
@@ -66,9 +63,27 @@ export class PlayerService {
       this.playerMovementService.animEntityJumping(this.entity, joystick);
    }
 
-   private generatePlayerAnimations(): void {
-      PlayerState.player.imageFrames.forEach((frame: ImageFrame) => {
-         AnimationFrame.create(this.entity, frame.name, PlayerState.player.name, frame.start, frame.end, frame.repeatable, frame.fps);
+   public handleTargetOverlap(targetContainer: TargetContainer, overlappedEntity: DynamicBody): void {
+      const currentTargets = targetContainer.dynamicBody.targetOrigin.currentTargets;
+      const isTargetAlreadyAdded = currentTargets.some((target: DynamicBody) => target.targetOrigin.id === overlappedEntity.targetOrigin.id);
+
+      if (!isTargetAlreadyAdded) {
+         targetContainer.dynamicBody.targetOrigin.currentTargets.push(overlappedEntity);
+      }
+   }
+
+   private removeOutRangeTargets(target: Target): void {
+      if (!target.currentTargets.length) {
+         return;
+      }
+
+      target.currentTargets.forEach((dynamicTarget: DynamicBody) => {
+         const currentTargetWentOutOfRange = Math.abs(this.entity.x - dynamicTarget.x) > this.entity.targetContainer.body.width;
+         const currentTargetIndex = target.currentTargets.indexOf(dynamicTarget);
+
+         if (currentTargetWentOutOfRange) {
+            target.currentTargets.splice(currentTargetIndex, 1);
+         }
       });
    }
 }

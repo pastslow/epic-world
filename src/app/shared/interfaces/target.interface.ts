@@ -1,5 +1,6 @@
 import { TargetType } from '../enums/target-type.enum';
 import { CombatAttributes } from './combat-attributes.interface';
+import { DynamicBody } from './dynamic-body.interface';
 import { ImageFrame } from './image-frames.interface';
 import { PhysicalAttributes } from './physical-attributes.interface';
 
@@ -12,6 +13,7 @@ export interface Target {
    currentMap?: string;
    combatAttributes?: CombatAttributes;
    physicalAttributes?: PhysicalAttributes;
-   currentTarget?: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+   currentTargets?: DynamicBody[];
    pushNotifications?: any[];
+   healthBar?: Phaser.GameObjects.Graphics;
 }
