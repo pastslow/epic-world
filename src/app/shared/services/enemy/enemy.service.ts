@@ -89,7 +89,7 @@ export class EnemyService extends TargetContainerSetup implements DynamicTarget 
       });
    }
 
-   public handleTargetOverlap(targetContainer: TargetContainer, overlappedEntity: any): void {
+   public handleTargetOverlap(targetContainer: TargetContainer, overlappedEntity: DynamicBody): void {
       targetContainer.dynamicBody.targetOrigin.currentTargets = [overlappedEntity];
 
       if (!targetContainer.dynamicBody.targetOrigin.healthBar) {
@@ -106,6 +106,19 @@ export class EnemyService extends TargetContainerSetup implements DynamicTarget 
          this.targetsContainer.remove(targetContainer, true, true);
          targetContainer.dynamicBody.targetOrigin.healthBar.destroy(true);
          this.dynamicEntries.remove(targetContainer.dynamicBody, true, true);
+      }
+   }
+
+   public handleTargetInheritance(targetContainer: TargetContainer, overlappedTargetContainer: TargetContainer): void {
+      const hasTargets = targetContainer.dynamicBody.targetOrigin.currentTargets.length;
+      const hasOverlappedEntityTargets = overlappedTargetContainer.dynamicBody.targetOrigin.currentTargets.length;
+
+      if (hasTargets && hasOverlappedEntityTargets) {
+         return;
+      }
+
+      if (hasTargets && !hasOverlappedEntityTargets) {
+         overlappedTargetContainer.dynamicBody.targetOrigin.currentTargets = targetContainer.dynamicBody.targetOrigin.currentTargets;
       }
    }
 }

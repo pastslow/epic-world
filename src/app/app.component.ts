@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
          default: 'arcade',
          arcade: {
             gravity: { y: 600, x: 0 },
-            debug: false,
+            debug: true,
          },
       },
       plugins: {
@@ -102,6 +102,7 @@ export class AppComponent implements OnInit {
       GameScene.cameras.main.setBounds(0, 0, MapExtras.mapSize, window.innerHeight);
       GameScene.cameras.main.startFollow(this.playerService.dynamicEntries.children.entries[0], true, 0.08, 0.08);
 
+      GameScene.physics.add.overlap(this.enemyService.targetsContainer, this.enemyService.targetsContainer, this.enemyService.handleTargetInheritance);
       GameScene.physics.add.overlap(this.enemyService.targetsContainer, this.playerService.dynamicEntries, this.enemyService.handleTargetOverlap);
       GameScene.physics.add.overlap(this.playerService.targetsContainer, this.enemyService.dynamicEntries, this.playerService.handleTargetOverlap);
 
