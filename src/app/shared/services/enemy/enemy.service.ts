@@ -118,7 +118,9 @@ export class EnemyService extends TargetContainerSetup implements DynamicTarget 
       }
 
       if (hasTargets && !hasOverlappedEntityTargets) {
-         overlappedTargetContainer.dynamicBody.targetOrigin.currentTargets = targetContainer.dynamicBody.targetOrigin.currentTargets;
+         GameScene.time.delayedCall(400, () => {
+            overlappedTargetContainer.dynamicBody.targetOrigin.combatAttributes.initialPositionX = targetContainer.x;
+         });
       }
    }
 }

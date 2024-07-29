@@ -24,7 +24,7 @@ export class EnemyState {
             viewRange: 400,
             pauseBetweenAttack: 1000,
             pauseStartTime: 0,
-            initialPositionX: 1000,
+            initialPositionX: 720,
             initialPositionY: 40,
          },
          physicalAttributes: {
