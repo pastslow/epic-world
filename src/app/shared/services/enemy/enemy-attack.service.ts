@@ -9,7 +9,7 @@ import { Target } from '../../interfaces/target.interface';
 @Injectable({ providedIn: 'root' })
 export class EnemyAttackService {
    public animAttack(monster: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody): void {
-      const monsterTargetOrigin = monster['targetOrigin'];
+      const monsterTargetOrigin: Target = monster['targetOrigin'];
       const currentMonsterTarget = monsterTargetOrigin.currentTargets[0].targetOrigin as Target;
 
       monsterTargetOrigin.physicalAttributes.movementForbidden = true;
@@ -22,6 +22,11 @@ export class EnemyAttackService {
          if (damageDealt.type !== DamageType.BLOCK && typeof damageDealt.value === 'number') {
             currentMonsterTarget.combatAttributes.currentHealth -= damageDealt.value;
             TargetActions.setTargetBodyAsHurt(monsterTargetOrigin.currentTargets[0]);
+
+            if (currentMonsterTarget.combatAttributes.currentHealth <= 0) {
+               monsterTargetOrigin.currentTargets.splice(0, 1);
+               return;
+            }
          }
 
          PushNotifications.addNotification({

@@ -7,5 +7,5 @@ export interface PhysicalAttributes {
    initialPosition?: number;
    initialPositionY?: number;
    pause?: number;
-   movementForbidden?: number;
+   movementForbidden?: boolean;
 }

@@ -46,6 +46,11 @@ export class PlayerService extends TargetContainerSetup implements DynamicTarget
       TargetActions.updateActionsPause(this.entity);
       this.updateTargetContainerPosition(this.entity.targetContainer, this.entity);
 
+      if (target.combatAttributes.currentHealth <= 0) {
+         this.handleDeath(this.entity, this.entity.targetContainer);
+         return;
+      }
+
       if (GameCursors.keyboardControls.space.isDown && target.combatAttributes.pauseStartTime === 0) {
          this.entity.targetOrigin.combatAttributes.isAttacking = true;
       }
@@ -85,5 +90,17 @@ export class PlayerService extends TargetContainerSetup implements DynamicTarget
             target.currentTargets.splice(currentTargetIndex, 1);
          }
       });
+   }
+
+   private handleDeath(dynamicBody: DynamicBody, targetContainer: TargetContainer): void {
+      dynamicBody.setVelocityX(0);
+      dynamicBody.anims.play('death', true);
+
+      if (dynamicBody.anims.currentAnim.key === 'death' && dynamicBody.anims.currentFrame.isLast) {
+         dynamicBody.setX(dynamicBody.targetOrigin.combatAttributes.initialPositionX);
+         // this.targetsContainer.remove(targetContainer, true, true);
+         // targetContainer.dynamicBody.targetOrigin.healthBar.destroy(true);
+         // this.dynamicEntries.remove(targetContainer.dynamicBody, true, true);
+      }
    }
 }

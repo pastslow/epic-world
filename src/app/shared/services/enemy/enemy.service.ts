@@ -90,6 +90,11 @@ export class EnemyService extends TargetContainerSetup implements DynamicTarget 
    }
 
    public handleTargetOverlap(targetContainer: TargetContainer, overlappedEntity: DynamicBody): void {
+      if (overlappedEntity.targetOrigin.combatAttributes.currentHealth <= 0) {
+         targetContainer.dynamicBody.targetOrigin.currentTargets = [];
+         return;
+      }
+
       targetContainer.dynamicBody.targetOrigin.currentTargets = [overlappedEntity];
 
       if (!targetContainer.dynamicBody.targetOrigin.healthBar) {
