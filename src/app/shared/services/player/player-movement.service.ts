@@ -8,7 +8,7 @@ import { JoystickController } from '../../interfaces/joystick-controller.interfa
 export class PlayerMovementService {
    public holdingKey = 0;
 
-   public animEntityMovement(entity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody, joystick: JoystickController): void {
+   public animEntityMovement(entity: DynamicBody, joystick: JoystickController): void {
       let velocityX = 0;
       let animationKey = 'player_idle';
 
@@ -33,6 +33,11 @@ export class PlayerMovementService {
       }
 
       entity.setVelocityX(velocityX);
+
+      if (entity.targetOrigin.combatAttributes.isAttacking) {
+         return;
+      }
+
       entity.anims.play(animationKey, true);
    }
 

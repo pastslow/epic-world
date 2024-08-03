@@ -57,12 +57,15 @@ export class PlayerService extends TargetContainerSetup implements DynamicTarget
 
       this.removeOutRangeTargets(target);
 
-      if (this.entity.targetOrigin.combatAttributes.isAttacking) {
-         this.playerAttackService.animAttack(this.entity);
-         return;
-      }
-
       const joystick = this.joystickService.getJoystickSimulatedKey();
+
+      if (this.entity.targetOrigin.combatAttributes.isAttacking) {
+         this.playerAttackService.animAttack(this.entity, joystick);
+
+         if (!GameCursors.keyboardControls.up.isDown) {
+            return;
+         }
+      }
 
       this.playerMovementService.animEntityMovement(this.entity, joystick);
       this.playerMovementService.animEntityJumping(this.entity, joystick);

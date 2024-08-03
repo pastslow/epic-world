@@ -9,9 +9,13 @@ import { DynamicBody } from '../../interfaces/dynamic-body.interface';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerAttackService {
-   public animAttack(entity: DynamicBody): void {
-      entity.anims.play(entity.targetOrigin.name + '_' + 'attack_top', true);
-      entity.setVelocityX(0);
+   public animAttack(entity: DynamicBody, joystick): void {
+      if (!joystick?.up && !GameCursors.keyboardControls.up.isDown) {
+         entity.anims.play(entity.targetOrigin.name + '_' + 'attack_top', true);
+         entity.setVelocityX(0);
+      } else {
+         entity.anims.play(entity.targetOrigin.name + '_' + 'jump_attack', true);
+      }
 
       if (GameCursors.keyboardControls.left.isDown) {
          entity.flipX = true;
