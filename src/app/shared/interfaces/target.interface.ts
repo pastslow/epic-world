@@ -10,6 +10,7 @@ export interface Target {
    type?: TargetType;
    image?: string;
    imageFrames?: ImageFrame[];
+   atlasFrames?: any;
    currentMap?: string;
    combatAttributes?: CombatAttributes;
    physicalAttributes?: PhysicalAttributes;

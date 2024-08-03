@@ -6,23 +6,23 @@ export class MapExtras {
    public static mapSize = 4000;
 
    public static loadMapExtras(): void {
-      GameScene.load.image('ground-1', 'assets/Maps/Swamp/Tilies/Tile_1.png');
-      GameScene.load.image('ground-2', 'assets/Maps/Swamp/Tilies/Tile_2.png');
-      GameScene.load.image('ground-3', 'assets/Maps/Swamp/Tilies/Tile_3.png');
-      GameScene.load.image('ground-4', 'assets/Maps/Swamp/Tilies/Tile_4.png');
-      GameScene.load.image('ground-5', 'assets/Maps/Swamp/Tilies/Tile_5.png');
+      GameScene.load.image('ground-1', 'assets/map_1_village/extras/tiles/1.png');
+      GameScene.load.image('ground-2', 'assets/map_1_village/extras/tiles/2.png');
+      GameScene.load.image('ground-3', 'assets/map_1_village/extras/tiles/3.png');
+      GameScene.load.image('ground-4', 'assets/map_1_village/extras/tiles/4.png');
+      GameScene.load.image('ground-5', 'assets/map_1_village/extras/tiles/5.png');
 
-      GameScene.load.image('grass-empty', 'assets/Maps/empty.png');
-      GameScene.load.image('grass-1', 'assets/Maps/Swamp/Objects/Grass/1.png');
-      GameScene.load.image('grass-2', 'assets/Maps/Swamp/Objects/Grass/2.png');
-      GameScene.load.image('grass-3', 'assets/Maps/Swamp/Objects/Grass/3.png');
-      GameScene.load.image('grass-4', 'assets/Maps/Swamp/Objects/Grass/4.png');
-      GameScene.load.image('grass-5', 'assets/Maps/Swamp/Objects/Grass/5.png');
-      GameScene.load.image('grass-6', 'assets/Maps/Swamp/Objects/Grass/6.png');
-      GameScene.load.image('grass-7', 'assets/Maps/Swamp/Objects/Grass/7.png');
-      GameScene.load.image('grass-8', 'assets/Maps/Swamp/Objects/Grass/8.png');
-      GameScene.load.image('grass-9', 'assets/Maps/Swamp/Objects/Grass/9.png');
-      GameScene.load.image('grass-10', 'assets/Maps/Swamp/Objects/Grass/10.png');
+      GameScene.load.image('grass-empty', 'assets/empty.png');
+      GameScene.load.image('grass-1', 'assets/map_1_village/extras/objects/grass/1.png');
+      GameScene.load.image('grass-2', 'assets/map_1_village/extras/objects/grass/2.png');
+      GameScene.load.image('grass-3', 'assets/map_1_village/extras/objects/grass/3.png');
+      GameScene.load.image('grass-4', 'assets/map_1_village/extras/objects/grass/4.png');
+      GameScene.load.image('grass-5', 'assets/map_1_village/extras/objects/grass/5.png');
+      GameScene.load.image('grass-6', 'assets/map_1_village/extras/objects/grass/6.png');
+      GameScene.load.image('grass-7', 'assets/map_1_village/extras/objects/grass/7.png');
+      GameScene.load.image('grass-8', 'assets/map_1_village/extras/objects/grass/8.png');
+      GameScene.load.image('grass-9', 'assets/map_1_village/extras/objects/grass/9.png');
+      GameScene.load.image('grass-10', 'assets/map_1_village/extras/objects/grass/10.png');
    }
 
    public static initializeTiles(): void {

@@ -94,13 +94,12 @@ export class PlayerService extends TargetContainerSetup implements DynamicTarget
 
    private handleDeath(dynamicBody: DynamicBody, targetContainer: TargetContainer): void {
       dynamicBody.setVelocityX(0);
-      dynamicBody.anims.play('death', true);
+      dynamicBody.anims.play(dynamicBody.targetOrigin.name + '_death', true);
 
-      if (dynamicBody.anims.currentAnim.key === 'death' && dynamicBody.anims.currentFrame.isLast) {
+      if (dynamicBody.anims.currentAnim.key === dynamicBody.targetOrigin.name + '_death' && dynamicBody.anims.currentFrame.isLast) {
          dynamicBody.setX(dynamicBody.targetOrigin.combatAttributes.initialPositionX);
-         // this.targetsContainer.remove(targetContainer, true, true);
-         // targetContainer.dynamicBody.targetOrigin.healthBar.destroy(true);
-         // this.dynamicEntries.remove(targetContainer.dynamicBody, true, true);
+         dynamicBody.anims.play(dynamicBody.targetOrigin.name + '_idle', true);
+         dynamicBody.targetOrigin.combatAttributes.currentHealth = dynamicBody.targetOrigin.combatAttributes.health;
       }
    }
 }

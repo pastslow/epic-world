@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { DamageProvider } from '~/src/app/features/models/damage-provider.model';
-import { GameScene } from '~/src/app/features/models/game-scene.model';
 import { PushNotification, PushNotifications } from '~/src/app/features/models/push-notification.model';
 import { TargetActions } from '~/src/app/features/state-models/target-actions.model';
 import { TimeStamp } from '~/src/app/features/state-models/time-stamp.model';
@@ -11,7 +10,7 @@ import { DynamicBody } from '../../interfaces/dynamic-body.interface';
 @Injectable({ providedIn: 'root' })
 export class PlayerAttackService {
    public animAttack(entity: DynamicBody): void {
-      entity.anims.play('attack', true);
+      entity.anims.play(entity.targetOrigin.name + '_' + 'attack_top', true);
       entity.setVelocityX(0);
 
       if (GameCursors.keyboardControls.left.isDown) {

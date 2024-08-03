@@ -7,6 +7,8 @@ export class GameScene {
    public static plugins: Phaser.Plugins.PluginManager;
    public static make: Phaser.GameObjects.GameObjectCreator;
    public static time: Phaser.Time.Clock;
+   public static anims: Phaser.Animations.AnimationManager
+
 
    public static initGameScene(phaserGame: Phaser.Game) {
       this.physics = phaserGame.scene.getScene('default').physics;
@@ -17,5 +19,6 @@ export class GameScene {
       this.plugins = phaserGame.scene.getScene('default').plugins;
       this.make = phaserGame.scene.getScene('default').make;
       this.time = phaserGame.scene.getScene('default').time;
+      this.anims = phaserGame.scene.getScene('default').anims;
    }
 }

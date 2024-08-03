@@ -60,7 +60,7 @@ export class EnemyService extends TargetContainerSetup implements DynamicTarget 
             }
 
             dynamicBody.setVelocityX(0);
-            dynamicBody.anims.play('idle', true);
+            dynamicBody.anims.play(entityTargetOrigin.name + '_' + 'idle', true);
             return;
          }
 
@@ -84,7 +84,7 @@ export class EnemyService extends TargetContainerSetup implements DynamicTarget 
             this.enemyAttackService.animAttack(dynamicBody);
          } else {
             dynamicBody.setVelocityX(0);
-            dynamicBody.anims.play('idle', true);
+            dynamicBody.anims.play(entityTargetOrigin.name + '_' + 'idle', true);
          }
       });
    }
@@ -105,9 +105,9 @@ export class EnemyService extends TargetContainerSetup implements DynamicTarget 
 
    private handleDeath(dynamicBody: DynamicBody, targetContainer: TargetContainer): void {
       dynamicBody.setVelocityX(0);
-      dynamicBody.anims.play('death', true);
+      dynamicBody.anims.play(dynamicBody.targetOrigin.name + '_death', true);
 
-      if (dynamicBody.anims.currentAnim.key === 'death' && dynamicBody.anims.currentFrame.isLast) {
+      if (dynamicBody.anims.currentAnim.key === dynamicBody.targetOrigin.name + '_death' && dynamicBody.anims.currentFrame.isLast) {
          this.targetsContainer.remove(targetContainer, true, true);
          targetContainer.dynamicBody.targetOrigin.healthBar.destroy(true);
          this.dynamicEntries.remove(targetContainer.dynamicBody, true, true);

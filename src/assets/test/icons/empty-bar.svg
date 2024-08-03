@@ -1,0 +1,13 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 114 24" width="114" height="24">
+	<title>empty progress bar-svg</title>
+	<defs>
+		<image  width="114" height="52" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHIAAAA0CAMAAABhApw+AAAAAXNSR0IB2cksfwAAAGxQTFRFAAAAhFZEhFZEhFZEhFZEhFZEhFVEglVCiVpFiVpFiVpFiVpFh1tGiVpFPCMkMRsfiVpEiVpFJRMaMBsfMRsfiVpFQScmNyAif1NDf1NDf1NDf1NDgFBEQSg7QSg7QSg7QSg7QSg7QCg7Pyk83rU/sAAAACR0Uk5TABiz6//96C8Z4//8KaT//93o/8gA/f//GuP//CkZsuv//egvR5hxtQAAAJ9JREFUeJzt1r0KgzAUBeB7/aP4iw7Fxfd/Kl+gQ6HiEjTGqGQpBUHwovTc4UCWfMmSHCa2Q2eN+draWoofJ4K/xqKZDtgdRyDMGHGpQn/BzW68KxfedDj0kHBMwiSBBAkSJEiQ9yNLlYq2gj6xRYRkJ+Javm5RI1wqW9krbixIkCD/kszXN72TJIvld9QfkCBBggQJEuS1yOfaCl5uOQMS7eRWp9seEgAAAABJRU5ErkJggg=="/>
+		<image  width="31" height="17" id="img2" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAARAQMAAAAfauUKAAAAAXNSR0IB2cksfwAAAAZQTFRFMBsfJRMaHFxj2wAAAAJ0Uk5TyP9Ysn/zAAAAEElEQVR4nGOsTpY8ykhlAgDjuh2OsMFFbAAAAABJRU5ErkJggg=="/>
+		<image  width="31" height="17" id="img3" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAARAQMAAAAfauUKAAAAAXNSR0IB2cksfwAAAAZQTFRFMBsfJRMaHFxj2wAAAAJ0Uk5TyP9Ysn/zAAAAEElEQVR4nGOsTpY8ykhlAgDjuh2OsMFFbAAAAABJRU5ErkJggg=="/>
+	</defs>
+	<style>
+	</style>
+	<use id="Layer 48" href="#img1" x="0" y="0"/>
+	<use id="Layer 49" href="#img2" x="42" y="3"/>
+	<use id="Layer 50" href="#img3" x="77" y="3"/>
+</svg>

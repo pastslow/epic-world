@@ -10,7 +10,7 @@ export class PlayerMovementService {
 
    public animEntityMovement(entity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody, joystick: JoystickController): void {
       let velocityX = 0;
-      let animationKey = 'idle';
+      let animationKey = 'player_idle';
 
       if (GameCursors.keyboardControls.left.isDown || joystick?.left) {
          const isRunning = this.holdingKey > 100;
@@ -18,7 +18,7 @@ export class PlayerMovementService {
 
          entity.flipX = true;
          velocityX = isRunning ? -180 : -100;
-         animationKey = isRunning ? 'running' : 'walking';
+         animationKey = isRunning ? 'player_run_equipped' : 'player_walk_equipped';
          this.holdingKey++;
       } else if (GameCursors.keyboardControls.right.isDown || joystick?.right) {
          const isRunning = this.holdingKey > 100;
@@ -26,7 +26,7 @@ export class PlayerMovementService {
 
          entity.flipX = false;
          velocityX = isRunning ? 180 : 100;
-         animationKey = isRunning ? 'running' : 'walking';
+         animationKey = isRunning ? 'player_run_equipped' : 'player_walk_equipped';
          this.holdingKey++;
       } else {
          this.holdingKey = 0;

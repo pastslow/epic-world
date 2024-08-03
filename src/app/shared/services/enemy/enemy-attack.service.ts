@@ -14,7 +14,7 @@ export class EnemyAttackService {
 
       monsterTargetOrigin.physicalAttributes.movementForbidden = true;
 
-      if (monster.anims.currentAnim.key === 'attack' && monster.anims.currentFrame.isLast) {
+      if (monster.anims.currentAnim.key === monsterTargetOrigin.name + '_' + 'attack' && monster.anims.currentFrame.isLast) {
          monsterTargetOrigin.physicalAttributes.movementForbidden = false;
 
          const damageDealt = DamageProvider.getDamageDealtToTarget(monsterTargetOrigin.combatAttributes, currentMonsterTarget);
@@ -38,6 +38,6 @@ export class EnemyAttackService {
       }
 
       monster.setVelocityX(0);
-      monster.anims.play({ key: 'attack' }, true);
+      monster.anims.play({ key: monsterTargetOrigin.name + '_' + 'attack' }, true);
    }
 }

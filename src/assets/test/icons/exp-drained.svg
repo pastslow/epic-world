@@ -1,0 +1,9 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 19" width="5" height="19">
+	<title>New Project</title>
+	<defs>
+		<image  width="5" height="19" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAATCAMAAABvPjdRAAAAAXNSR0IB2cksfwAAAHtQTFRFdTYAcjUAdC8AcS4AEWwACWoAA2sABGoAAmwAAW0AAXkAAHoAAYkAAogABIYAAIoAA4cAB4MAF3MADnwAD3sAEHoAFXQAAn4AAX8ABHwABnoAA30AAHAAAW8AA20AAm4ADGMAAlEAAVIABU4AB0wAA1AADUYAPiEAPR8AwYg9iQAAAFFJREFUeJwdjMEKgEAIBR1bOlSH6hJBLARB//99tZn6DoM4+hAPaLIAQq/Cx4D5akw9pQ2qs5PG/IofLw8uViJb/u4a4sB8riE5k1crptzR8wPl/wp5gbQanAAAAABJRU5ErkJggg=="/>
+	</defs>
+	<style>
+	</style>
+	<use id="Background" href="#img1" x="0" y="0"/>
+</svg>

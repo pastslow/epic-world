@@ -9,14 +9,14 @@ export class EnemyMovementService {
       const playerComesFromLeft = collidedEntity.x < entity.x;
 
       if (playerComesFromRight) {
-         entity.anims.play('walk', true);
+         entity.anims.play(entity.targetOrigin.name + '_' + 'walk', true);
          entity.flipX = true;
          entity.setVelocityX(150);
          return;
       }
 
       if (playerComesFromLeft) {
-         entity.anims.play('walk', true);
+         entity.anims.play(entity.targetOrigin.name + '_' + 'walk', true);
          entity.flipX = false;
          entity.setVelocityX(-150);
       }
@@ -29,7 +29,7 @@ export class EnemyMovementService {
          return;
       }
 
-      entity.anims.play('walk', true);
+      entity.anims.play(entityTargetOrigin.name + '_' + 'walk', true);
 
       if (entity.x > entityTargetOrigin.combatAttributes.initialPositionX) {
          entity.flipX = false;

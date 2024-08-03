@@ -1,0 +1,9 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 114 24" width="114" height="24">
+	<title>empty-bar-svg</title>
+	<defs>
+		<image  width="114" height="52" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHIAAAA0CAMAAABhApw+AAAAAXNSR0IB2cksfwAAAHhQTFRFAAAAhFZEhFZEhFZEhFZEhFZEhFVEglVCiVpFiVpFiVpFiVpFh1tGiVpFPCMkMRsfiVpEiVpFJRMaMBsfiVpFQScmNyAif1NDf1NDf1NDf1NDgFBEQSg7QSg7QSg7QSg7QSg7QCg7Pyk8PCMkMRsfJRMaQScmNyAiEuleJwAAACh0Uk5TABiz6//96C8Z4//8KaQAAN3oAAD9AAAa4//8KRmy6//96C///////xTRssQAAACTSURBVHic7da9CoQwEATgXfxBIhZW11x34vs/j6hvYRE05HKRNGLrcOJMsZAmX9Iso6IhclX84epgWa0uBM8S0Mblmp4DGH4rtbVF9sM9ZrjVqBEwKSRJkiRJkuT9yNbW0FawmFBEBJtSX/i6JW9wqZyxX9xZkiRJPpL8xJ0+IckukiNJkiRJkiRJ8r/IPpJDOn4ByXbkUzd9IjQAAAAASUVORK5CYII="/>
+	</defs>
+	<style>
+	</style>
+	<use id="img3" href="#img1" x="0" y="0"/>
+</svg>

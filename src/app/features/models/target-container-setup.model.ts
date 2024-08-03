@@ -31,13 +31,20 @@ export abstract class TargetContainerSetup {
 
       entity.displayHeight = targetOrigin.physicalAttributes.height;
       entity.displayWidth = targetOrigin.physicalAttributes.width;
+      entity.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
+
       entity.name = targetOrigin.name;
       entity.targetOrigin = targetOrigin;
 
       const targetContainer: TargetContainer = this.getViewRange(targetOrigin);
 
       targetContainer.dynamicBody = entity;
-      targetContainer.dynamicBody.play('idle', true);
+
+      if (entity.targetOrigin.imageFrames.length) {
+         this.generateTargetAnimations(targetOrigin, targetContainer.dynamicBody);
+      }
+
+      // targetContainer.dynamicBody.play('idle', true);
       entity.targetContainer = targetContainer;
 
       GameScene.physics.add.existing(entity);
@@ -45,8 +52,6 @@ export abstract class TargetContainerSetup {
       GameScene.physics.add.collider(entity, platforms);
       entity.setBounce(0.2);
       entity.setCollideWorldBounds(true);
-
-      this.generateTargetAnimations(targetOrigin, targetContainer.dynamicBody);
 
       return targetContainer;
    }

@@ -53,10 +53,10 @@ export class Parallax {
    }
 
    public static loadParallaxBackgrounds(): void {
-      GameScene.load.image('layer-1', 'assets/Maps/Swamp/Layers/1.png');
-      GameScene.load.image('layer-2', 'assets/Maps/Swamp/Layers/2.png');
-      GameScene.load.image('layer-3', 'assets/Maps/Swamp/Layers/3.png');
-      GameScene.load.image('layer-4', 'assets/Maps/Swamp/Layers/4.png');
-      GameScene.load.image('layer-5', 'assets/Maps/Swamp/Layers/5.png');
+      GameScene.load.image('layer-1', 'assets/map_1_village/extras/background/layers/1.png');
+      GameScene.load.image('layer-2', 'assets/map_1_village/extras/background/layers/2.png');
+      GameScene.load.image('layer-3', 'assets/map_1_village/extras/background/layers/3.png');
+      GameScene.load.image('layer-4', 'assets/map_1_village/extras/background/layers/4.png');
+      GameScene.load.image('layer-5', 'assets/map_1_village/extras/background/layers/5.png');
    }
 }
