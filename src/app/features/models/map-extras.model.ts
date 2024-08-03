@@ -40,7 +40,8 @@ export class MapExtras {
 
    public static initializeGrass(grassChance: number = 60): void {
       const grassPieces = 500;
-      const grassHeight = 15;
+      const grassScale = 2;
+      const grassHeight = 20 * grassScale;
       const terrainHeight = 32;
       const positionY = window.innerHeight - terrainHeight - grassHeight / 3;
 
@@ -49,7 +50,9 @@ export class MapExtras {
          const chance = Math.random() * 100;
          const positionX = Math.random() * this.mapSize;
 
-         MapExtras.grass.create(positionX, positionY, chance <= grassChance ? 'grass-' + grassNumber : 'grass-empty');
+         const x = MapExtras.grass.create(positionX, positionY, chance <= grassChance ? 'grass-' + grassNumber : 'grass-empty');
+         x.setScale(grassScale);
+         x.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
       }
    }
 

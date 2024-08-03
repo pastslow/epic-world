@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
          default: 'arcade',
          arcade: {
             gravity: { y: 600, x: 0 },
-            debug: true,
+            // debug: true,
          },
       },
       plugins: {
@@ -73,8 +73,8 @@ export class AppComponent implements OnInit {
 
    public preload(): void {
       GameScene.initGameScene(this.phaserGame);
-      AssetsLoader.loadAtlasSprite(PlayerState.player);
-      AssetsLoader.loadAtlasSprite(EnemyState.enemies[0]);
+      AssetsLoader.loadAtlasSprite([PlayerState.player]);
+      AssetsLoader.loadAtlasSprite(EnemyState.enemies);
 
       Parallax.loadParallaxBackgrounds();
       MapExtras.loadMapExtras();

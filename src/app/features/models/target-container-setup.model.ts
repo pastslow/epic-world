@@ -44,7 +44,6 @@ export abstract class TargetContainerSetup {
          this.generateTargetAnimations(targetOrigin, targetContainer.dynamicBody);
       }
 
-      // targetContainer.dynamicBody.play('idle', true);
       entity.targetContainer = targetContainer;
 
       GameScene.physics.add.existing(entity);

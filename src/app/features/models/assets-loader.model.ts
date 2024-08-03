@@ -17,8 +17,10 @@ export class AssetsLoader {
       });
    }
 
-   public static loadAtlasSprite(target: Target) {
-      GameScene.load.animation(target.name, AnimationFrame.generateAtlasAnimation(target) as any);
-      GameScene.load.atlas(target.name, target.image, AtlasGenerator.generateAtlas(target));
+   public static loadAtlasSprite(targets: Target[]) {
+      targets.forEach((target) => {
+         GameScene.load.animation(target.name, AnimationFrame.generateAtlasAnimation(target) as any);
+         GameScene.load.atlas(target.name, target.image, AtlasGenerator.generateAtlas(target));
+      });
    }
 }

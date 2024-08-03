@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GameScene } from '~/src/app/features/models/game-scene.model';
 import { HealthBar } from '~/src/app/features/models/health-bar.model';
-import { Particles } from '~/src/app/features/models/particles.model';
 import { TargetContainerSetup } from '~/src/app/features/models/target-container-setup.model';
 import { EnemyState } from '~/src/app/features/state-models/enemy-state.model';
 import { TargetActions } from '~/src/app/features/state-models/target-actions.model';
