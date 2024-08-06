@@ -16,6 +16,7 @@ import { EnemyMovementService } from './enemy-movement.service';
    providedIn: 'root',
 })
 export class EnemyService extends TargetContainerSetup implements DynamicTarget {
+   public attackRangeContainer: Phaser.GameObjects.Group;
    public targetsContainer: Phaser.GameObjects.Group;
    public dynamicEntries: Phaser.Physics.Arcade.Group;
 
@@ -24,14 +25,17 @@ export class EnemyService extends TargetContainerSetup implements DynamicTarget 
    }
 
    public initializeTarget(platforms: Phaser.Physics.Arcade.StaticGroup): void {
+      this.attackRangeContainer = GameScene.add.group();
       this.targetsContainer = GameScene.add.group();
       this.dynamicEntries = GameScene.physics.add.group();
+      this.enemyAttackService.ammunitionGroup = GameScene.physics.add.group();
 
       EnemyState.enemies.forEach((target: Target) => {
          const targetContainer = this.getTargetContainer(target, platforms);
 
          this.targetsContainer.add(targetContainer);
          this.dynamicEntries.add(targetContainer.dynamicBody);
+         this.attackRangeContainer.add(targetContainer.dynamicBody.attackRangeContainer);
       });
    }
 
@@ -39,7 +43,16 @@ export class EnemyService extends TargetContainerSetup implements DynamicTarget 
       this.targetsContainer.children.entries.forEach((targetContainer: TargetContainer) => {
          const dynamicBody = targetContainer.dynamicBody;
          const entityTargetOrigin: Target = dynamicBody.targetOrigin;
-         this.updateTargetContainerPosition(targetContainer, dynamicBody);
+         const castedAbility = this.getCastedAbility(entityTargetOrigin);
+         this.updateTargetContainerPosition(targetContainer, dynamicBody, castedAbility);
+         const ammunitionEntries = this.enemyAttackService.ammunitionGroup.children.entries;
+         const dynamicBodyX = dynamicBody.x;
+
+         if (ammunitionEntries.length) {
+            ammunitionEntries.forEach((entry) => {
+               entry['setVelocityX'](entry['combatAttributes'].speed);
+            });
+         }
 
          if (entityTargetOrigin.healthBar) {
             HealthBar.updateHealthBar(dynamicBody, entityTargetOrigin.healthBar);
@@ -53,7 +66,7 @@ export class EnemyService extends TargetContainerSetup implements DynamicTarget 
          TargetActions.updateActionsPause(dynamicBody);
 
          if (!entityTargetOrigin.currentTargets.length) {
-            if (entityTargetOrigin.combatAttributes.initialPositionX !== dynamicBody.x) {
+            if (entityTargetOrigin.combatAttributes.initialPositionX !== dynamicBodyX) {
                this.enemyMovementService.returnToItsInitialPosition(dynamicBody, entityTargetOrigin);
                return;
             }
@@ -63,29 +76,66 @@ export class EnemyService extends TargetContainerSetup implements DynamicTarget 
             return;
          }
 
-         const currentTargetWentOutOfRange = Math.abs(dynamicBody.x - entityTargetOrigin.currentTargets[0].x) > targetContainer.body.width;
+         const currentTargetX = entityTargetOrigin.currentTargets[0].x;
+         const currentTargetWentOutOfRange = Math.abs(dynamicBodyX - currentTargetX) > targetContainer.body.width;
 
          if (currentTargetWentOutOfRange) {
             entityTargetOrigin.currentTargets = [];
             return;
          }
 
-         if (
-            !TargetActions.isTargetInActionEntityRange(dynamicBody, entityTargetOrigin.currentTargets[0]) &&
-            entityTargetOrigin.combatAttributes.pauseStartTime === 0 &&
-            !entityTargetOrigin.physicalAttributes.movementForbidden
-         ) {
+         this.flipMonsterBasedOnTargetPosition(dynamicBody, dynamicBodyX, currentTargetX);
+
+         if (this.isTargetInAttackEntityRange(dynamicBody, entityTargetOrigin)) {
             this.enemyMovementService.animEntityMovement(dynamicBody, entityTargetOrigin.currentTargets[0]);
             return;
          }
 
-         if (entityTargetOrigin.combatAttributes.pauseStartTime === 0) {
-            this.enemyAttackService.animAttack(dynamicBody);
-         } else {
-            dynamicBody.setVelocityX(0);
-            dynamicBody.anims.play(entityTargetOrigin.name + '_' + 'idle', true);
-         }
+         this.handleTargetAttack(entityTargetOrigin, dynamicBody, castedAbility);
       });
+   }
+
+   public isTargetInAttackEntityRange(dynamicBody: DynamicBody, entityTargetOrigin: Target): boolean {
+      return (
+         !TargetActions.isTargetInAttackEntityRange(dynamicBody, entityTargetOrigin.currentTargets[0]) &&
+         entityTargetOrigin.combatAttributes.pauseStartTime === 0 &&
+         !entityTargetOrigin.physicalAttributes.movementForbidden
+      );
+   }
+
+   public flipMonsterBasedOnTargetPosition(dynamicBody, dynamicBodyX, currentTargetX) {
+      const playerComesFromRight = dynamicBodyX >= currentTargetX;
+      const playerComesFromLeft = dynamicBodyX < currentTargetX;
+
+      if (playerComesFromRight) {
+         dynamicBody.flipX = false;
+      }
+
+      if (playerComesFromLeft) {
+         dynamicBody.flipX = true;
+      }
+   }
+
+   public handleTargetAttack(entityTargetOrigin, dynamicBody, castedAbility) {
+      if (entityTargetOrigin.combatAttributes.pauseStartTime === 0) {
+         this.enemyAttackService.animAttack(dynamicBody, castedAbility);
+      } else {
+         dynamicBody.setVelocityX(0);
+         dynamicBody.anims.play(entityTargetOrigin.name + '_' + 'idle', true);
+      }
+   }
+
+   public getCastedAbility(entityTargetOrigin: Target) {
+      if (!entityTargetOrigin?.abilities?.length) {
+         return;
+      }
+      const randomAbilityIndex = Math.round(Math.random() * (entityTargetOrigin.abilities.length - 1));
+
+      const chance = Math.round(Math.random() * 100);
+
+      if (entityTargetOrigin.abilities[randomAbilityIndex].chance >= chance) {
+         return entityTargetOrigin.abilities[randomAbilityIndex];
+      }
    }
 
    public handleTargetOverlap(targetContainer: TargetContainer, overlappedEntity: DynamicBody): void {

@@ -11,11 +11,8 @@ export class TargetActions {
       return targetOffsetLeft < entityPosition - enemySize / 2 - entityRange;
    }
 
-   static isTargetInActionEntityRange(
-      entity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody,
-      monster: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
-   ): boolean {
-      const playerBounds = entity.getBounds();
+   static isTargetInAttackEntityRange(entity: DynamicBody, monster: DynamicBody): boolean {
+      const playerBounds = entity.attackRangeContainer.getBounds();
       const monsterBounds = monster.getBounds();
 
       const overlapX = Math.max(0, Math.min(playerBounds.right, monsterBounds.right) - Math.max(playerBounds.left, monsterBounds.left));
@@ -25,12 +22,11 @@ export class TargetActions {
       return overlapX >= halfMonsterArea;
    }
 
-   public static updateActionsPause(entity: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody) {
-      const hadEnoughPause =
-         TimeStamp.now - entity['targetOrigin'].combatAttributes.pauseStartTime > entity['targetOrigin'].combatAttributes.pauseBetweenAttack;
+   public static updateActionsPause(entity: DynamicBody) {
+      const hadEnoughPause = TimeStamp.now - entity.targetOrigin.combatAttributes.pauseStartTime > entity.targetOrigin.combatAttributes.pauseBetweenAttack;
 
       if (hadEnoughPause) {
-         entity['targetOrigin'].combatAttributes.pauseStartTime = 0;
+         entity.targetOrigin.combatAttributes.pauseStartTime = 0;
       }
    }
 

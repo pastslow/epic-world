@@ -34,7 +34,8 @@ export class PlayerService extends TargetContainerSetup implements DynamicTarget
       this.dynamicEntries = GameScene.physics.add.group();
 
       const targetContainer = this.getTargetContainer(PlayerState.player, platforms);
-      targetContainer.dynamicBody.body.setSize(PlayerState.player.physicalAttributes.width / 4, 0, true);
+      targetContainer.dynamicBody.body.setSize(25, 0, true);
+      targetContainer.dynamicBody.body.setOffset(0, 0);
 
       this.targetsContainer.add(targetContainer);
       this.dynamicEntries.add(targetContainer.dynamicBody);

@@ -20,5 +20,4 @@ export interface CombatAttributes {
    initialPositionX?: number;
    initialPositionY?: number;
    isAttacking?: boolean;
-   knockback?: number;
 }

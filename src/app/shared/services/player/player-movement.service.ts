@@ -15,6 +15,7 @@ export class PlayerMovementService {
       if (GameCursors.keyboardControls.left.isDown || joystick?.left) {
          const isRunning = this.holdingKey > 100;
          Parallax.listenToParallaxMovement(isRunning, 'left', entity.x);
+         entity.body.setOffset(20, 0);
 
          entity.flipX = true;
          velocityX = isRunning ? -180 : -100;
@@ -25,6 +26,7 @@ export class PlayerMovementService {
          Parallax.listenToParallaxMovement(isRunning, 'right', entity.x);
 
          entity.flipX = false;
+         entity.body.setOffset(0, 0);
          velocityX = isRunning ? 180 : 100;
          animationKey = isRunning ? 'player_run_equipped' : 'player_walk_equipped';
          this.holdingKey++;

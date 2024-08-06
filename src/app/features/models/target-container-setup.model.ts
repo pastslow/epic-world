@@ -6,9 +6,28 @@ import { AnimationFrame } from './animation-frame.model';
 import { GameScene } from './game-scene.model';
 
 export abstract class TargetContainerSetup {
-   public updateTargetContainerPosition(targetContainer: TargetContainer, dynamicBody: DynamicBody): void {
+   public updateTargetContainerPosition(targetContainer: TargetContainer, dynamicBody: DynamicBody, castedAbility?): void {
       targetContainer.setPosition(dynamicBody.x, dynamicBody.y);
       targetContainer.body.updateFromGameObject();
+      dynamicBody.attackRangeContainer.setPosition(dynamicBody.x, dynamicBody.y);
+      this.updateAttackRangeContainer(dynamicBody, castedAbility);
+   }
+
+   public updateAttackRangeContainer(dynamicBody: DynamicBody, castedAbility?): void {
+      let attackRangeWidth, attackRangeHeight;
+
+      if (castedAbility) {
+         attackRangeWidth = castedAbility.viewRangeX;
+         attackRangeHeight = castedAbility.viewRangeY;
+      } else {
+         attackRangeWidth = dynamicBody.targetOrigin.combatAttributes.attackRange;
+         attackRangeHeight = dynamicBody.targetOrigin.physicalAttributes.height;
+      }
+
+      if (dynamicBody.attackRangeContainer.width !== attackRangeWidth) {
+         dynamicBody.attackRangeContainer.setDisplaySize(attackRangeWidth, attackRangeHeight);
+         dynamicBody.attackRangeContainer.body.updateFromGameObject();
+      }
    }
 
    public getViewRange(target: Target): TargetContainer {
@@ -16,6 +35,17 @@ export abstract class TargetContainerSetup {
          target.combatAttributes.initialPositionX,
          window.innerHeight - target.physicalAttributes.height,
          target.combatAttributes.viewRange,
+         target.physicalAttributes.height,
+         0x00ff00,
+         0
+      );
+   }
+
+   public getAttackRange(target: Target): TargetContainer {
+      return GameScene.add.rectangle(
+         target.combatAttributes.initialPositionX,
+         window.innerHeight - target.physicalAttributes.height,
+         target.combatAttributes.attackRange,
          target.physicalAttributes.height,
          0x00ff00,
          0
@@ -37,6 +67,7 @@ export abstract class TargetContainerSetup {
       entity.targetOrigin = targetOrigin;
 
       const targetContainer: TargetContainer = this.getViewRange(targetOrigin);
+      const attackRangeContainer: TargetContainer = this.getAttackRange(targetOrigin);
 
       targetContainer.dynamicBody = entity;
 
@@ -45,9 +76,11 @@ export abstract class TargetContainerSetup {
       }
 
       entity.targetContainer = targetContainer;
+      entity.attackRangeContainer = attackRangeContainer;
 
       GameScene.physics.add.existing(entity);
       GameScene.physics.add.existing(targetContainer, true);
+      GameScene.physics.add.existing(attackRangeContainer, true);
       GameScene.physics.add.collider(entity, platforms);
       entity.setBounce(0.2);
       entity.setCollideWorldBounds(true);

@@ -19,6 +19,8 @@ import { PlayerService } from './shared/services/player/player.service';
 import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
 import { JoystickService } from './shared/services/joystick.service';
 import { Particles } from './features/models/particles.model';
+import { Ammunition } from './features/models/ammunition.model';
+import { EnemyAttackService } from './shared/services/enemy/enemy-attack.service';
 
 @Component({
    selector: 'app-root',
@@ -43,7 +45,7 @@ export class AppComponent implements OnInit {
          default: 'arcade',
          arcade: {
             gravity: { y: 600, x: 0 },
-            // debug: true,
+            debug: true,
          },
       },
       plugins: {
@@ -61,6 +63,7 @@ export class AppComponent implements OnInit {
       private readonly playerService: PlayerService,
       private readonly buildingService: BuildingsService,
       private readonly enemyService: EnemyService,
+      private readonly enemyAttackService: EnemyAttackService,
       private readonly joystickService: JoystickService
    ) {}
 
@@ -79,6 +82,7 @@ export class AppComponent implements OnInit {
       Parallax.loadParallaxBackgrounds();
       MapExtras.loadMapExtras();
       AssetsLoader.loadAssets(BuildingsState.buildings, false);
+      Ammunition.loadAssets();
       Particles.loadParticles();
 
       this.buildingService.loadBuildings();
@@ -105,6 +109,8 @@ export class AppComponent implements OnInit {
 
       GameScene.physics.add.overlap(this.enemyService.targetsContainer, this.enemyService.targetsContainer, this.enemyService.handleTargetInheritance);
       GameScene.physics.add.overlap(this.enemyService.targetsContainer, this.playerService.dynamicEntries, this.enemyService.handleTargetOverlap);
+      GameScene.physics.add.collider(this.enemyAttackService.ammunitionGroup, this.playerService.dynamicEntries, this.enemyAttackService.handleTargetOverlap);
+
       GameScene.physics.add.overlap(this.playerService.targetsContainer, this.enemyService.dynamicEntries, this.playerService.handleTargetOverlap);
 
       this.joystickService.initializeJoystick();

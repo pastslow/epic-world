@@ -10,11 +10,12 @@ export interface Target {
    type?: TargetType;
    image?: string;
    imageFrames?: ImageFrame[];
-   atlasFrames?: any;
+   atlasFrames?: any[];
    currentMap?: string;
    combatAttributes?: CombatAttributes;
    physicalAttributes?: PhysicalAttributes;
    currentTargets?: DynamicBody[];
    pushNotifications?: any[];
    healthBar?: Phaser.GameObjects.Graphics;
+   abilities?: any[];
 }

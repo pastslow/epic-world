@@ -4,4 +4,5 @@ import { Target } from './target.interface';
 export interface DynamicBody extends Phaser.Types.Physics.Arcade.SpriteWithDynamicBody {
    targetOrigin?: Target;
    targetContainer?: TargetContainer;
+   attackRangeContainer?: Phaser.Physics.Arcade.Body | any;
 }
