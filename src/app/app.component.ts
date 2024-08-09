@@ -12,7 +12,6 @@ import { PushNotifications } from './features/models/push-notification.model';
 import { BuildingsState } from './features/state-models/buildings-state.model';
 import { EnemyState } from './features/state-models/enemy-state.model';
 import { PlayerState } from './features/state-models/player-state.model';
-import { TimeStamp } from './features/state-models/time-stamp.model';
 import { BuildingsService } from './shared/services/buildings.service';
 import { EnemyService } from './shared/services/enemy/enemy.service';
 import { PlayerService } from './shared/services/player/player.service';
@@ -45,7 +44,7 @@ export class AppComponent implements OnInit {
          default: 'arcade',
          arcade: {
             gravity: { y: 600, x: 0 },
-            debug: true,
+            // debug: true,
          },
       },
       plugins: {
@@ -110,6 +109,7 @@ export class AppComponent implements OnInit {
       GameScene.physics.add.overlap(this.enemyService.targetsContainer, this.enemyService.targetsContainer, this.enemyService.handleTargetInheritance);
       GameScene.physics.add.overlap(this.enemyService.targetsContainer, this.playerService.dynamicEntries, this.enemyService.handleTargetOverlap);
       GameScene.physics.add.collider(this.enemyAttackService.ammunitionGroup, this.playerService.dynamicEntries, this.enemyAttackService.handleTargetOverlap);
+      GameScene.physics.add.collider(this.enemyAttackService.ammunitionGroup, MapExtras.tiles, this.enemyAttackService.handleAmmoGroundHit);
 
       GameScene.physics.add.overlap(this.playerService.targetsContainer, this.enemyService.dynamicEntries, this.playerService.handleTargetOverlap);
 
@@ -117,8 +117,6 @@ export class AppComponent implements OnInit {
    }
 
    public update(): void {
-      TimeStamp.now = new Date().getTime();
-
       this.playerService.listenToTargetActions();
       this.enemyService.listenToTargetActions();
 

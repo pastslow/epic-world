@@ -1,5 +1,4 @@
 import { DamageType } from '../../shared/enums/damage-type.enum';
-import { TimeStamp } from '../state-models/time-stamp.model';
 import { GameScene } from './game-scene.model';
 
 export class PushNotifications {
@@ -23,7 +22,7 @@ export class PushNotifications {
       );
       notification.settings.size = 24;
       notification.settings.duration = 500;
-      notification.settings.currentTime = TimeStamp.now;
+      notification.settings.currentTime = GameScene.time.now;
       text.settings = { ...notification.settings };
 
       this.notifications.push(text);
@@ -40,7 +39,7 @@ export class PushNotifications {
             ? 0
             : notification.settings.attachedTarget.displayWidth / 2 - notification.settings.size;
 
-         if (notification.settings.duration + notification.settings.currentTime < TimeStamp.now) {
+         if (notification.settings.duration + notification.settings.currentTime < GameScene.time.now) {
             notification.destroy();
             this.notifications.splice(index, 1);
             return;

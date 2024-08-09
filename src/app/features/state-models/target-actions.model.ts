@@ -1,6 +1,5 @@
 import { DynamicBody } from '../../shared/interfaces/dynamic-body.interface';
 import { GameScene } from '../models/game-scene.model';
-import { TimeStamp } from './time-stamp.model';
 
 export class TargetActions {
    public static isTargetAheadEntity(targetOffsetLeft: number, entityPosition: number, entityWidth: number, enemySize: number, entityRange = 0): boolean {
@@ -23,7 +22,7 @@ export class TargetActions {
    }
 
    public static updateActionsPause(entity: DynamicBody) {
-      const hadEnoughPause = TimeStamp.now - entity.targetOrigin.combatAttributes.pauseStartTime > entity.targetOrigin.combatAttributes.pauseBetweenAttack;
+      const hadEnoughPause = GameScene.time.now - entity.targetOrigin.combatAttributes.pauseStartTime > entity.targetOrigin.combatAttributes.pauseBetweenAttack;
 
       if (hadEnoughPause) {
          entity.targetOrigin.combatAttributes.pauseStartTime = 0;
