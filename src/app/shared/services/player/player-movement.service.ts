@@ -8,7 +8,7 @@ import { JoystickController } from '../../interfaces/joystick-controller.interfa
 export class PlayerMovementService {
    public holdingKey = 0;
 
-   public animEntityMovement(entity: DynamicBody, joystick: JoystickController): void {
+   public animEntityMovement(entity: DynamicBody, joystick: JoystickController, knocked): void {
       let velocityX = 0;
       let animationKey = 'player_idle';
 
@@ -34,7 +34,9 @@ export class PlayerMovementService {
          this.holdingKey = 0;
       }
 
-      entity.setVelocityX(velocityX);
+      if (!knocked) {
+         entity.setVelocityX(velocityX);
+      }
 
       if (entity.targetOrigin.combatAttributes.isAttacking) {
          return;
@@ -43,10 +45,12 @@ export class PlayerMovementService {
       entity.anims.play(animationKey, true);
    }
 
-   public animEntityJumping(entity: DynamicBody, joystick: JoystickController): void {
+   public animEntityJumping(entity: DynamicBody, joystick: JoystickController, knocked): void {
       if (GameCursors.keyboardControls.up.isDown || joystick?.up) {
          if (entity.body.touching.down && Math.abs(entity.body.velocity.y) < 10) {
-            entity.setVelocityY(-200);
+            if (!knocked) {
+               entity.setVelocityY(-200);
+            }
          }
       }
    }

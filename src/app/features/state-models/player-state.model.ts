@@ -27,7 +27,7 @@ export class PlayerState {
          initialPositionY: 40,
          pauseBetweenAttack: 300,
          pauseStartTime: 0,
-         attackRange: 50,
+         attackRange: 200,
          viewRange: 50,
       },
       physicalAttributes: {

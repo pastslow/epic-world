@@ -5,4 +5,7 @@ export interface DynamicBody extends Phaser.Types.Physics.Arcade.SpriteWithDynam
    targetOrigin?: Target;
    targetContainer?: TargetContainer;
    attackRangeContainer?: Phaser.Physics.Arcade.Body | any;
+   previousX?: number;
+   previousY?: number;
+   knocked?: boolean;
 }

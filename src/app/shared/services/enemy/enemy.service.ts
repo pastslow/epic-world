@@ -49,8 +49,8 @@ export class EnemyService extends TargetContainerSetup implements DynamicTarget 
          const dynamicBodyX = dynamicBody.x;
 
          if (ammunitionEntries.length) {
-            ammunitionEntries.forEach((entry) => {
-               entry['setVelocityX'](entry['combatAttributes'].speed);
+            ammunitionEntries.forEach((entry: DynamicBody) => {
+               entry.setVelocityX(entry.targetOrigin.combatAttributes.speed);
             });
          }
 

@@ -55,9 +55,19 @@ export class EnemyAttackService {
    }
 
    public handleTargetOverlap(arrow: DynamicBody, overlappedEntity: DynamicBody) {
-      setTimeout(() => {
-         arrow.destroy();
-      }, 50);
+      const knockbackStrength = 200;
+      const direction = new Phaser.Math.Vector2(arrow.x - overlappedEntity.x, arrow.y - overlappedEntity.y).normalize();
+
+      overlappedEntity.setVelocity(-direction.x * knockbackStrength, direction.y * knockbackStrength);
+      overlappedEntity.knocked = true;
+
+      GameScene.time.delayedCall(100, () => {
+         overlappedEntity.knocked = false;
+      });
+
+      DamageProvider.dealTargetDamage(arrow.targetOrigin.combatAttributes, overlappedEntity);
+
+      arrow.destroy();
    }
 
    private canCastAbility(castedAbility) {
@@ -65,14 +75,14 @@ export class EnemyAttackService {
    }
 
    private fireWithAmmo(monster: DynamicBody, castedAbility) {
-      const ammo = GameScene.physics.add.image(monster.x, monster.y + 10, 'simple_arrow');
-
+      const ammo = GameScene.physics.add.image(monster.x, monster.y + 10, 'simple_arrow') as DynamicBody;
+      ammo.targetOrigin = {};
       ammo.setBounce(0.2);
       ammo.setCollideWorldBounds(true);
       ammo.setImmovable(true);
       ammo.setName('arrow');
       GameScene.physics.add.collider(ammo, MapExtras.tiles);
-      ammo['combatAttributes'] = { speed: monster.flipX ? 400 * 2 : -(400 * 2) };
+      ammo.targetOrigin.combatAttributes = { speed: monster.flipX ? 400 * 2 : -(400 * 2), ...castedAbility };
       this.ammunitionGroup.add(ammo);
    }
 }

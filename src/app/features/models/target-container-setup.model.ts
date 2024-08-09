@@ -7,10 +7,23 @@ import { GameScene } from './game-scene.model';
 
 export abstract class TargetContainerSetup {
    public updateTargetContainerPosition(targetContainer: TargetContainer, dynamicBody: DynamicBody, castedAbility?): void {
+      const previousTargetContainerPositionX = dynamicBody.previousX;
+      const previousTargetContainerPositionY = dynamicBody.previousY;
+
+      if (previousTargetContainerPositionX === dynamicBody.x && previousTargetContainerPositionY === dynamicBody.y) {
+         return;
+      }
+
       targetContainer.setPosition(dynamicBody.x, dynamicBody.y);
       targetContainer.body.updateFromGameObject();
+
       dynamicBody.attackRangeContainer.setPosition(dynamicBody.x, dynamicBody.y);
+      dynamicBody.attackRangeContainer.body.updateFromGameObject();
+
       this.updateAttackRangeContainer(dynamicBody, castedAbility);
+
+      dynamicBody.previousX = dynamicBody.x;
+      dynamicBody.previousY = dynamicBody.y;
    }
 
    public updateAttackRangeContainer(dynamicBody: DynamicBody, castedAbility?): void {

@@ -68,8 +68,8 @@ export class PlayerService extends TargetContainerSetup implements DynamicTarget
          }
       }
 
-      this.playerMovementService.animEntityMovement(this.entity, joystick);
-      this.playerMovementService.animEntityJumping(this.entity, joystick);
+      this.playerMovementService.animEntityMovement(this.entity, joystick, this.entity.knocked);
+      this.playerMovementService.animEntityJumping(this.entity, joystick, this.entity.knocked);
    }
 
    public handleTargetOverlap(targetContainer: TargetContainer, overlappedEntity: DynamicBody): void {

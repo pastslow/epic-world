@@ -1,6 +1,9 @@
 import { CombatAttributes } from '../../shared/interfaces/combat-attributes.interface';
 import { Target } from '../../shared/interfaces/target.interface';
 import { DamageType } from '../../shared/enums/damage-type.enum';
+import { DynamicBody } from '../../shared/interfaces/dynamic-body.interface';
+import { TargetActions } from '../state-models/target-actions.model';
+import { PushNotifications, PushNotification } from './push-notification.model';
 
 export class DamageProvider {
    public static getDamageDealtToTarget(entityCombatAttributes: CombatAttributes, target: Target) {
@@ -20,6 +23,19 @@ export class DamageProvider {
       }
 
       return { type: DamageType.NORMAL, value: damageDealt };
+   }
+
+   public static dealTargetDamage(combatAttributes: CombatAttributes, overlappedEntity: DynamicBody): void {
+      const damageDealt = DamageProvider.getDamageDealtToTarget(combatAttributes, overlappedEntity.targetOrigin);
+
+      if (damageDealt.type !== DamageType.BLOCK && typeof damageDealt.value === 'number') {
+         overlappedEntity.targetOrigin.combatAttributes.currentHealth -= damageDealt.value;
+         TargetActions.setTargetBodyAsHurt(overlappedEntity);
+      }
+
+      PushNotifications.addNotification({
+         settings: { ...damageDealt, attachedTarget: overlappedEntity },
+      } as PushNotification);
    }
 
    private static getDamage(entityCombatAttributes: CombatAttributes): number {
